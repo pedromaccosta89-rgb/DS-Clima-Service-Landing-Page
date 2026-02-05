@@ -756,7 +756,7 @@
     
     <p class="text-center text-gray-600 mb-8">If you want someone who fixes, explains and follows up, leave your details.</p>
 
-    <form id="contact" action="thankyou.html" method="POST" novalidate>
+    <form id="contact-form" action="thankyou.html" method="POST" novalidate>
 
       <div>
         
@@ -1193,7 +1193,7 @@
 <!-- ---------- Validação do form (versão afinada v2) ---------- -->
 <script>
 (function () {
-  const form = document.getElementById("contact");
+  const form = document.getElementById("contact-form");
   if (!form) return;
 
   const el = {
@@ -1361,7 +1361,7 @@
 
 <script>
 (function () {
-  const form = document.getElementById("contact");
+  const form = document.getElementById("contact-form");
   if (!form) return;
 
   function cameFromBackForward(event) {
