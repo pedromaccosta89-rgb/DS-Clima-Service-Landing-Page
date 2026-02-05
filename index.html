@@ -1329,8 +1329,8 @@
     const v = trim(el.message.value);
 
     // se queres mesmo impedir vazio:
-    if (v.length < 10) {
-      setFieldValidity(el.message, "Escreva uma mensagem curta (mín. 10 caracteres).");
+    if (v.length > 0 && v.length < 10) {
+      setFieldValidity(el.message, "Se escrever mensagem, use pelo menos 10 caracteres.");
       return false;
     }
 
@@ -1448,7 +1448,11 @@
 
     // reativar botão submit, caso tenha ficado disabled
     const btn = form.querySelector('button[type="submit"], input[type="submit"]');
-    if (btn) btn.disabled = false;
+    if (btn) {
+      btn.disabled = false;
+      btn.removeAttribute("aria-disabled");
+      btn.style.pointerEvents = "";
+    }
   });
 })();
 </script>
