@@ -1,15 +1,84 @@
+<?php
+$makeWebhook = 'https://hook.eu2.make.com/rqwaw3g4ldz8vpxp3rl669q9fklv5534';
+
+function clean_field(string $key): string {
+  return trim((string)($_POST[$key] ?? ''));
+}
+
+$makeStatus = $_GET['status'] ?? '';
+$makeError = '';
+
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+  $payload = [
+    'lang' => 'pt',
+    'firstName' => clean_field('firstName'),
+    'lastName' => clean_field('lastName'),
+    'email' => clean_field('email'),
+    'phone' => clean_field('phone'),
+    'setor' => clean_field('setor'),
+    'service' => clean_field('service'),
+    'message' => clean_field('message'),
+    'sourceUrl' => (string)($_SERVER['HTTP_REFERER'] ?? ''),
+    'submittedAt' => gmdate('c'),
+    'ip' => (string)($_SERVER['REMOTE_ADDR'] ?? ''),
+    'userAgent' => (string)($_SERVER['HTTP_USER_AGENT'] ?? ''),
+  ];
+
+  $jsonPayload = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+  if ($jsonPayload !== false) {
+    $httpCode = 0;
+
+    if (function_exists('curl_init')) {
+      $ch = curl_init($makeWebhook);
+      curl_setopt_array($ch, [
+        CURLOPT_POST => true,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
+        CURLOPT_POSTFIELDS => $jsonPayload,
+        CURLOPT_TIMEOUT => 12,
+      ]);
+      curl_exec($ch);
+      $httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+      $curlErr = curl_error($ch);
+      curl_close($ch);
+
+      if ($curlErr) {
+        $makeError = $curlErr;
+      }
+    } else {
+      $context = stream_context_create([
+        'http' => [
+          'method' => 'POST',
+          'header' => "Content-Type: application/json\r\n",
+          'content' => $jsonPayload,
+          'timeout' => 12,
+        ],
+      ]);
+      @file_get_contents($makeWebhook, false, $context);
+      if (isset($http_response_header[0]) && preg_match('/\s(\d{3})\s/', $http_response_header[0], $m)) {
+        $httpCode = (int)$m[1];
+      }
+    }
+
+    $makeStatus = ($httpCode >= 200 && $httpCode < 300) ? 'ok' : 'error';
+  } else {
+    $makeStatus = 'error';
+    $makeError = 'Failed to encode payload.';
+  }
+
+  $target = strtok($_SERVER['REQUEST_URI'] ?? '', '?');
+  $location = $target . '?status=' . urlencode($makeStatus);
+  if ($makeStatus === 'error' && $makeError !== '') {
+    $location .= '&reason=' . urlencode(substr($makeError, 0, 120));
+  }
+  header('Location: ' . $location, true, 303);
+  exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-KNH628TQ');</script>
-<!-- End Google Tag Manager -->
-  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -42,11 +111,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </head>
 
 <body class="font-sans antialiased bg-white">
-
-  <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KNH628TQ"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
 
   <!-- Header (igual ao da landing) -->
   <header id="site-header"
@@ -90,7 +154,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- Badge -->
         <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-white/90 text-sm">
           <span class="inline-block h-2 w-2 rounded-full bg-accent"></span>
-          Pedido recebido com sucesso
+          <?php if ($makeStatus === "error"): ?>Pedido recebido (com alerta no envio interno)<?php else: ?>Pedido recebido com sucesso<?php endif; ?>
         </div>
 
         <h1 class="mt-6 text-3xl md:text-5xl font-extrabold leading-tight text-white">

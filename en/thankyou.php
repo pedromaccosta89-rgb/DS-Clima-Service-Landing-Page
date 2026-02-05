@@ -1,15 +1,84 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
+<?php
+$makeWebhook = 'https://hook.eu2.make.com/rqwaw3g4ldz8vpxp3rl669q9fklv5534';
 
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-KNH628TQ');</script>
-<!-- End Google Tag Manager -->
-  
+function clean_field(string $key): string {
+  return trim((string)($_POST[$key] ?? ''));
+}
+
+$makeStatus = $_GET['status'] ?? '';
+$makeError = '';
+
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+  $payload = [
+    'lang' => 'en',
+    'firstName' => clean_field('firstName'),
+    'lastName' => clean_field('lastName'),
+    'email' => clean_field('email'),
+    'phone' => clean_field('phone'),
+    'setor' => clean_field('setor'),
+    'service' => clean_field('service'),
+    'message' => clean_field('message'),
+    'sourceUrl' => (string)($_SERVER['HTTP_REFERER'] ?? ''),
+    'submittedAt' => gmdate('c'),
+    'ip' => (string)($_SERVER['REMOTE_ADDR'] ?? ''),
+    'userAgent' => (string)($_SERVER['HTTP_USER_AGENT'] ?? ''),
+  ];
+
+  $jsonPayload = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+  if ($jsonPayload !== false) {
+    $httpCode = 0;
+
+    if (function_exists('curl_init')) {
+      $ch = curl_init($makeWebhook);
+      curl_setopt_array($ch, [
+        CURLOPT_POST => true,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
+        CURLOPT_POSTFIELDS => $jsonPayload,
+        CURLOPT_TIMEOUT => 12,
+      ]);
+      curl_exec($ch);
+      $httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+      $curlErr = curl_error($ch);
+      curl_close($ch);
+
+      if ($curlErr) {
+        $makeError = $curlErr;
+      }
+    } else {
+      $context = stream_context_create([
+        'http' => [
+          'method' => 'POST',
+          'header' => "Content-Type: application/json\r\n",
+          'content' => $jsonPayload,
+          'timeout' => 12,
+        ],
+      ]);
+      @file_get_contents($makeWebhook, false, $context);
+      if (isset($http_response_header[0]) && preg_match('/\s(\d{3})\s/', $http_response_header[0], $m)) {
+        $httpCode = (int)$m[1];
+      }
+    }
+
+    $makeStatus = ($httpCode >= 200 && $httpCode < 300) ? 'ok' : 'error';
+  } else {
+    $makeStatus = 'error';
+    $makeError = 'Failed to encode payload.';
+  }
+
+  $target = strtok($_SERVER['REQUEST_URI'] ?? '', '?');
+  $location = $target . '?status=' . urlencode($makeStatus);
+  if ($makeStatus === 'error' && $makeError !== '') {
+    $location .= '&reason=' . urlencode(substr($makeError, 0, 120));
+  }
+  header('Location: ' . $location, true, 303);
+  exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,8 +86,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <meta name="description" content="Obrigado pelo contacto — DS Clima Service. Resposta rápida e acompanhamento real." />
-  <title>Obrigado pelo contacto | DS Clima Service</title>
+  <meta name="description" content="Thanks for getting in touch — DS Clima Service. Fast response and proper follow-through." />
+  <title>Thanks for getting in touch | DS Clima Service</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -43,41 +112,35 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <body class="font-sans antialiased bg-white">
 
-  <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KNH628TQ"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-
-  <!-- Header (igual ao da landing) -->
-  <header id="site-header"
-    class="fixed top-0 z-50 w-full transition-all duration-300 bg-primary">
+  <!-- Header (same layout as landing) -->
+  <header id="site-header" class="fixed top-0 z-50 w-full transition-all duration-300 bg-primary">
     <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
 
-      <a href="index_pt_residente_v2.html" class="flex items-center">
+      <a href="/en/" class="flex items-center">
         <img
-          src="logos/Logo_Horizontal_ComDescriptor_Inverso_Editado.svg"
+          src="../logos/Logo_Horizontal_ComDescriptor_Inverso_Editado.svg"
           alt="DS Clima Service"
           class="h-7 md:h-8 w-auto"
         />
       </a>
 
       <a
-        href="https://wa.me/351961653736?text=Olá,%20enviei%20um%20pedido%20pelo%20site%20e%20queria%20acelerar%20o%20contacto."
+        href="https://wa.me/351961653736?text=Hi,%20I%20sent%20a%20request%20through%20the%20website%20and%20would%20like%20to%20move%20things%20along.%20Could%20you%20please%20advise%20the%20next%20steps%3F"
         target="_blank"
         rel="noopener"
         class="inline-flex items-center bg-accent hover:bg-secondary text-white font-bold px-5 py-3 rounded-lg shadow transition"
       >
-        LIGAR
+        CALL
       </a>
     </div>
   </header>
 
-  <!-- Hero / Obrigado (visual coerente com a landing) -->
+  <!-- Hero / Thank you (keeps the same visual style) -->
   <section class="relative min-h-screen overflow-hidden pt-20">
 
-    <!-- Background (reaproveita o mesmo asset do hero para coerência) -->
+    <!-- Background -->
     <img
-      src="logos/ds_carrinha_bg.webp"
+      src="../logos/ds_carrinha_bg.webp"
       alt=""
       class="absolute inset-0 h-full w-full object-cover"
     />
@@ -90,45 +153,45 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- Badge -->
         <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-white/90 text-sm">
           <span class="inline-block h-2 w-2 rounded-full bg-accent"></span>
-          Pedido recebido com sucesso
+          Request received
         </div>
 
         <h1 class="mt-6 text-3xl md:text-5xl font-extrabold leading-tight text-white">
-          Obrigado pelo contacto.
+          Thanks for getting in touch.
         </h1>
 
         <p class="mt-5 text-base md:text-lg text-white/85 leading-relaxed">
-          A sua mensagem foi recebida.
-          Vamos analisar o pedido e responder-lhe com a solução mais adequada,
-          com a mesma lógica de trabalho da DS:
-          <span class="font-semibold text-white">clareza, execução e acompanhamento</span>.
+          We’ve received your message.
+          We’ll review your request and come back with the most suitable next step —
+          in the DS way:
+          <span class="font-semibold text-white">clear communication, solid execution and proper follow-through</span>.
         </p>
 
-        <!-- Card com expectativa (sem promessas fracas) -->
+        <!-- What happens next -->
         <div class="mt-8 rounded-2xl bg-white/95 p-6 shadow-xl backdrop-blur">
           <p class="text-sm font-semibold text-gray-600 uppercase tracking-wide">
-            O que acontece agora
+            What happens next
           </p>
 
           <ul class="mt-4 space-y-3 text-gray-800 text-sm leading-relaxed">
             <li class="flex gap-3">
               <span class="mt-1 inline-block h-2 w-2 rounded-full bg-accent"></span>
-              Confirmamos os detalhes do pedido (tipo de serviço + local + urgência).
+              We confirm the key details (service type, location and urgency).
             </li>
             <li class="flex gap-3">
               <span class="mt-1 inline-block h-2 w-2 rounded-full bg-accent"></span>
-              Se for assistência técnica, priorizamos diagnóstico e resolução responsável.
+              For technical support, we prioritise proper diagnostics and responsible fixes.
             </li>
             <li class="flex gap-3">
               <span class="mt-1 inline-block h-2 w-2 rounded-full bg-accent"></span>
-              Se for instalação, validamos dimensionamento e condições do espaço antes de orçamentar.
+              For installations, we validate sizing and site conditions before quoting.
             </li>
           </ul>
 
-          <!-- CTA estilo “pill” como na landing -->
+          <!-- CTA pill (same style as landing) -->
           <div class="mt-6 flex flex-col sm:flex-row gap-3">
             <a
-              href="https://wa.me/351961653736?text=Olá,%20enviei%20um%20pedido%20pelo%20formulário.%20Podem%20ajudar-me%20a%20agendar%20o%20diagnóstico%20técnico?"
+              href="https://wa.me/351961653736?text=Hi,%20I%20submitted%20a%20request%20via%20the%20form.%20Could%20you%20help%20me%20book%20a%20technical%20diagnostic%20visit%3F"
               target="_blank"
               rel="noopener"
               class="relative inline-flex items-center justify-center
@@ -138,7 +201,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                      text-white shadow-lg
                      hover:bg-secondary transition"
             >
-              FALAR NO WHATSAPP
+              MESSAGE US ON WHATSAPP
               <span
                 class="absolute right-2 top-1/2 -translate-y-1/2
                        grid h-10 w-10 place-items-center
@@ -154,7 +217,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </a>
 
             <a
-              href="index_pt_residente_v2.html#servicos"
+              href="/en/#servicos"
               class="inline-flex items-center justify-center
                      rounded-full bg-white/90
                      px-6 py-4
@@ -162,21 +225,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                      text-primary shadow-lg
                      hover:bg-white transition"
             >
-              VOLTAR À PÁGINA
+              BACK TO THE PAGE
             </a>
           </div>
 
           <p class="mt-4 text-xs text-gray-500">
-            Não é necessário reenviar o formulário.
+            No need to submit the form again.
           </p>
         </div>
+
       </div>
     </div>
-
-        </div>
   </section>
 
-  <!-- Footer (igual ao da landing) -->
+  <!-- Footer (same layout as landing) -->
   <footer class="bg-primary text-white py-12">
     <div class="max-w-6xl mx-auto px-6">
       <div class="grid gap-8 md:grid-cols-3">
@@ -184,12 +246,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div>
           <h3 class="font-bold text-lg mb-4">DS Clima Service</h3>
           <p class="text-sm text-gray-300">
-            Instalação, manutenção e assistência técnica em Lagos, Portimão, Lagoa, Burgau e Sagres.
+            Installation, maintenance and technical support in Lagos, Portimão, Lagoa, Burgau and Sagres.
           </p>
         </div>
 
         <div>
-          <h3 class="font-bold text-lg mb-4">Contacto</h3>
+          <h3 class="font-bold text-lg mb-4">Contact</h3>
           <ul class="text-sm space-y-2">
             <li>
               <a href="tel:+351961653736" class="text-gray-300 hover:text-accent transition">
@@ -210,17 +272,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div>
           <h3 class="font-bold text-lg mb-4 mt-4">Legal</h3>
           <ul class="text-sm space-y-2">
-            <li><a href="#" class="text-gray-300 hover:text-accent transition">Política de Privacidade</a></li>
-            <li><a href="#" class="text-gray-300 hover:text-accent transition">Termos e Condições</a></li>
+            <li><a href="#" class="text-gray-300 hover:text-accent transition">Privacy Policy</a></li>
+            <li><a href="#" class="text-gray-300 hover:text-accent transition">Terms &amp; Conditions</a></li>
           </ul>
         </div>
       </div>
 
       <div class="mt-8 border-t border-gray-700 pt-8 text-center text-sm text-gray-400">
-        <p>&copy; 2026 DS Clima Service. Todos os direitos reservados.</p>
+        <p>&copy; 2026 DS Clima Service. All rights reserved.</p>
       </div>
     </div>
   </footer>
+
+<script>
+  // impede o browser de servir a página de obrigado do cache ao voltar/avançar
+  window.addEventListener("pageshow", function (e) {
+    if (e.persisted) window.location.reload();
+  });
+</script>
+
 
 </body>
 </html>
