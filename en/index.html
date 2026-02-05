@@ -756,7 +756,7 @@
     
     <p class="text-center text-gray-600 mb-8">If you want someone who fixes, explains and follows up, leave your details.</p>
 
-    <form id="contact" action="thankyou.html" method="POST" novalidate>
+    <form id="contact-form" action="thankyou.html" method="GET" novalidate>
 
       <div>
         
@@ -1192,16 +1192,22 @@
 <!-- ---------- Validação do form (versão afinada v2) ---------- -->
 <script>
 (function () {
-  const form = document.getElementById("contact");
+  const form = document.getElementById("contact-form");
   if (!form) return;
 
   const el = {
+    name: document.getElementById("name"),
     email: document.getElementById("email"),
     phone: document.getElementById("phone"),
+    setor: document.getElementById("setor"),
+    service: document.getElementById("service"),
+    message: document.getElementById("message"),
   };
 
+  const trim = (v) => (v || "").trim();
+
   function normalizePhone(value) {
-    return (value || "").trim().replace(/[()\s-]/g, "");
+    return trim(value).replace(/[()\s.-]/g, "");
   }
 
   function isValidPhone(value) {
@@ -1211,8 +1217,10 @@
     return true;
   }
 
-  function basicEmailShape(value) {
-    const email = (value || "").trim();
+  function isValidEmail(value) {
+    const email = trim(value);
+    if (/\s/.test(email)) return false;
+    if ((email.match(/@/g) || []).length !== 1) return false;
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return false;
     if (email.includes("..")) return false;
     return true;
@@ -1223,11 +1231,28 @@
     input.setCustomValidity(message || "");
   }
 
+  function validateName() {
+    if (!el.name) return true;
+    const v = trim(el.name.value);
+
+    if (v.length < 2) {
+      setFieldValidity(el.name, "Please enter a valid name.");
+      return false;
+    }
+    if (!/[A-Za-zÀ-ÖØ-öø-ÿ]/.test(v)) {
+      setFieldValidity(el.name, "Please enter a valid name.");
+      return false;
+    }
+
+    setFieldValidity(el.name, "");
+    return true;
+  }
+
   function validateEmail() {
     if (!el.email) return true;
-    const email = el.email.value || "";
+    const email = trim(el.email.value);
 
-    if (!basicEmailShape(email)) {
+    if (!isValidEmail(email)) {
       setFieldValidity(el.email, "Please enter a valid email address.");
       return false;
     }
@@ -1249,35 +1274,68 @@
     return true;
   }
 
+  function validateSelect(input, msg) {
+    if (!input) return true;
+    const v = trim(input.value);
+    if (!v) {
+      setFieldValidity(input, msg);
+      return false;
+    }
+    setFieldValidity(input, "");
+    return true;
+  }
+
+  function validateMessage() {
+    if (!el.message) return true;
+    const v = trim(el.message.value);
+
+    if (v.length > 0 && v.length < 10) {
+      setFieldValidity(el.message, "If you add a message, use at least 10 characters.");
+      return false;
+    }
+
+    setFieldValidity(el.message, "");
+    return true;
+  }
+
+  el.name?.addEventListener("input", () => setFieldValidity(el.name, ""));
   el.email?.addEventListener("input", () => setFieldValidity(el.email, ""));
   el.phone?.addEventListener("input", () => setFieldValidity(el.phone, ""));
+  el.setor?.addEventListener("change", () => setFieldValidity(el.setor, ""));
+  el.service?.addEventListener("change", () => setFieldValidity(el.service, ""));
+  el.message?.addEventListener("input", () => setFieldValidity(el.message, ""));
 
   form.addEventListener("submit", function (e) {
+    const okName = validateName();
     const okEmail = validateEmail();
     const okPhone = validatePhone();
+    const okSetor = validateSelect(el.setor, "Please select a sector.");
+    const okService = validateSelect(el.service, "Please select a service.");
+    const okMsg = validateMessage();
 
     if (el.phone) el.phone.value = normalizePhone(el.phone.value);
+    if (el.email) el.email.value = trim(el.email.value);
 
-    // Só bloqueia se houver erro
-    if (!okEmail || !okPhone || !form.checkValidity()) {
+    if (!okName || !okEmail || !okPhone || !okSetor || !okService || !okMsg || !form.checkValidity()) {
       e.preventDefault();
 
+      if (!okName) { el.name?.reportValidity(); el.name?.focus(); return; }
       if (!okEmail) { el.email?.reportValidity(); el.email?.focus(); return; }
       if (!okPhone) { el.phone?.reportValidity(); el.phone?.focus(); return; }
+      if (!okSetor) { el.setor?.reportValidity(); el.setor?.focus(); return; }
+      if (!okService) { el.service?.reportValidity(); el.service?.focus(); return; }
+      if (!okMsg) { el.message?.reportValidity(); el.message?.focus(); return; }
 
       form.reportValidity();
       return;
     }
 
-    // Tudo OK: desativa o botão para evitar double-submit
     const btn = form.querySelector('button[type="submit"], input[type="submit"]');
     if (btn) {
       btn.disabled = true;
       btn.setAttribute("aria-disabled", "true");
       btn.style.pointerEvents = "none";
     }
-
-    // Deixa o browser fazer o POST normal
   });
 })();
 </script>
@@ -1302,7 +1360,7 @@
 
 <script>
 (function () {
-  const form = document.getElementById("contact");
+  const form = document.getElementById("contact-form");
   if (!form) return;
 
   function cameFromBackForward(event) {
@@ -1326,7 +1384,11 @@
 
     // reativar botão submit, caso tenha ficado disabled
     const btn = form.querySelector('button[type="submit"], input[type="submit"]');
-    if (btn) btn.disabled = false;
+    if (btn) {
+      btn.disabled = false;
+      btn.removeAttribute("aria-disabled");
+      btn.style.pointerEvents = "";
+    }
   });
 })();
 </script>
