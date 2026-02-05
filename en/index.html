@@ -758,12 +758,20 @@
 
     <form id="contact-form" action="thankyou.html" method="GET" novalidate>
 
-      <div>
-        
-        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name (First and last)</label>
-        <input type="text" id="name" name="name" required
-        	   placeholder="First and Last name"
-               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent" required/>
+      <div class="grid gap-4 md:grid-cols-2">
+        <div>
+          <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">First name</label>
+          <input type="text" id="firstName" name="firstName" required
+                 placeholder="First name"
+                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
+        </div>
+
+        <div>
+          <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">Last name</label>
+          <input type="text" id="lastName" name="lastName" required
+                 placeholder="Last name"
+                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
+        </div>
       </div>
 
       <div>
@@ -1197,7 +1205,8 @@
   if (!form) return;
 
   const el = {
-    name: document.getElementById("name"),
+    firstName: document.getElementById("firstName"),
+    lastName: document.getElementById("lastName"),
     email: document.getElementById("email"),
     phone: document.getElementById("phone"),
     setor: document.getElementById("setor"),
@@ -1232,20 +1241,36 @@
     input.setCustomValidity(message || "");
   }
 
-  function validateName() {
-    if (!el.name) return true;
-    const v = trim(el.name.value);
+  function isValidPersonName(value) {
+    const v = trim(value);
+    if (v.length < 2) return false;
+    if (!/[A-Za-zÀ-ÖØ-öø-ÿ]/.test(v)) return false;
+    return true;
+  }
 
-    if (v.length < 2) {
-      setFieldValidity(el.name, "Please enter a valid name.");
+  function validateFirstName() {
+    if (!el.firstName) return true;
+    const v = trim(el.firstName.value);
+
+    if (!isValidPersonName(v)) {
+      setFieldValidity(el.firstName, "Please enter a valid first name.");
       return false;
     }
-    if (!/[A-Za-zÀ-ÖØ-öø-ÿ]/.test(v)) {
-      setFieldValidity(el.name, "Please enter a valid name.");
+
+    setFieldValidity(el.firstName, "");
+    return true;
+  }
+
+  function validateLastName() {
+    if (!el.lastName) return true;
+    const v = trim(el.lastName.value);
+
+    if (!isValidPersonName(v)) {
+      setFieldValidity(el.lastName, "Please enter a valid last name.");
       return false;
     }
 
-    setFieldValidity(el.name, "");
+    setFieldValidity(el.lastName, "");
     return true;
   }
 
@@ -1299,7 +1324,8 @@
     return true;
   }
 
-  el.name?.addEventListener("input", () => setFieldValidity(el.name, ""));
+  el.firstName?.addEventListener("input", () => setFieldValidity(el.firstName, ""));
+  el.lastName?.addEventListener("input", () => setFieldValidity(el.lastName, ""));
   el.email?.addEventListener("input", () => setFieldValidity(el.email, ""));
   el.phone?.addEventListener("input", () => setFieldValidity(el.phone, ""));
   el.setor?.addEventListener("change", () => setFieldValidity(el.setor, ""));
@@ -1307,7 +1333,8 @@
   el.message?.addEventListener("input", () => setFieldValidity(el.message, ""));
 
   form.addEventListener("submit", function (e) {
-    const okName = validateName();
+    const okFirstName = validateFirstName();
+    const okLastName = validateLastName();
     const okEmail = validateEmail();
     const okPhone = validatePhone();
     const okSetor = validateSelect(el.setor, "Please select a sector.");
@@ -1317,10 +1344,11 @@
     if (el.phone) el.phone.value = normalizePhone(el.phone.value);
     if (el.email) el.email.value = trim(el.email.value);
 
-    if (!okName || !okEmail || !okPhone || !okSetor || !okService || !okMsg || !form.checkValidity()) {
+    if (!okFirstName || !okLastName || !okEmail || !okPhone || !okSetor || !okService || !okMsg || !form.checkValidity()) {
       e.preventDefault();
 
-      if (!okName) { el.name?.reportValidity(); el.name?.focus(); return; }
+      if (!okFirstName) { el.firstName?.reportValidity(); el.firstName?.focus(); return; }
+      if (!okLastName) { el.lastName?.reportValidity(); el.lastName?.focus(); return; }
       if (!okEmail) { el.email?.reportValidity(); el.email?.focus(); return; }
       if (!okPhone) { el.phone?.reportValidity(); el.phone?.focus(); return; }
       if (!okSetor) { el.setor?.reportValidity(); el.setor?.focus(); return; }
