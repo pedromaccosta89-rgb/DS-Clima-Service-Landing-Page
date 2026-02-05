@@ -1327,6 +1327,7 @@
     if (!el.message) return true;
     const v = trim(el.message.value);
 
+    // se queres mesmo impedir vazio:
     if (v.length > 0 && v.length < 10) {
       setFieldValidity(el.message, "Se escrever mensagem, use pelo menos 10 caracteres.");
       return false;
