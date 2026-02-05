@@ -144,7 +144,7 @@
         href="/"
         rel="alternate"
         hreflang="pt-PT"
-        class="hidden md:inline-flex text-white text-xs font-semibold px-3 py-2 rounded-md bg-black/35 border border-white/25 hover:bg-black/45 transition shrink-0"
+        id="lang-toggle-desktop" class="hidden md:inline-flex text-white text-xs font-semibold px-3 py-2 rounded-md bg-black/35 border border-white/25 hover:bg-black/45 transition shrink-0"
         aria-label="Ver site em português"
       >
         PT
@@ -158,7 +158,7 @@
   href="/"
   rel="alternate"
   hreflang="pt-PT"
-  class="fixed top-16 right-3 z-[70] md:hidden inline-flex items-center justify-center rounded-md bg-black/45 border border-white/40 px-3 py-2 text-xs font-bold text-white shadow-lg"
+  id="lang-toggle-mobile" class="fixed top-16 right-3 z-[70] md:hidden inline-flex items-center justify-center rounded-md bg-black/45 border border-white/40 px-3 py-2 text-xs font-bold text-white shadow-lg transition-all duration-200"
   aria-label="Ver site em português"
 >
   PT
@@ -1214,6 +1214,32 @@
 
 <!-- ---------- Validação do form (versão afinada v2) ---------- -->
 <!-- ---------- Validação do form (versão afinada v2) ---------- -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggles = [
+      document.getElementById('lang-toggle-desktop'),
+      document.getElementById('lang-toggle-mobile')
+    ].filter(Boolean);
+    const secondFold = document.getElementById('confianca');
+
+    if (!toggles.length || !secondFold) return;
+
+    function updateLangToggleVisibility() {
+      const cutoff = secondFold.getBoundingClientRect().top + window.scrollY - 8;
+      const hide = window.scrollY >= cutoff;
+
+      toggles.forEach((el) => {
+        el.style.opacity = hide ? '0' : '1';
+        el.style.pointerEvents = hide ? 'none' : '';
+      });
+    }
+
+    updateLangToggleVisibility();
+    window.addEventListener('scroll', updateLangToggleVisibility, { passive: true });
+    window.addEventListener('resize', updateLangToggleVisibility);
+  });
+</script>
+
 <script>
 (function () {
   const form = document.getElementById("contact-form");
