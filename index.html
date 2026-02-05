@@ -86,8 +86,16 @@
 
     #gallery { scroll-behavior: auto; }
 
+    #hero {
+      min-height: clamp(760px, 100svh, 920px);
+      height: auto;
+    }
+
     @media (min-width: 768px) {
-      #hero { height: clamp(680px, 75vh, 680px); }
+      #hero {
+        height: clamp(680px, 75vh, 680px);
+        min-height: 0;
+      }
     }
 
     /* Scrollbar hide (mantém funcionalidade) */
@@ -116,7 +124,7 @@
     class="h-7 md:h-8 w-auto"
   />
 </a>
-<div class="ml-auto flex items-center gap-2 pl-3">
+<div class="ml-auto flex items-center gap-2 pl-3 pr-[max(0.5rem,env(safe-area-inset-right))]">
 
   <!-- CTA (mobile compacto, desktop normal) -->
   <a
@@ -133,7 +141,7 @@
     href="/en/"
     rel="alternate"
     hreflang="en"
-    class="text-white/70 text-xs font-semibold px-2 py-2 rounded hover:bg-white/10 transition shrink-0"
+    class="text-white text-xs font-semibold px-3 py-2 rounded-md bg-black/35 border border-white/25 hover:bg-black/45 transition shrink-0"
     aria-label="View website in English"
   >
     EN
@@ -144,7 +152,7 @@
  </header>
 
 <!-- HERO -->
-<section id="hero" class="relative h-[98vh] md:h-[75vh] pb-16 md:pb-16 overflow-hidden">
+<section id="hero" class="relative pb-10 md:pb-16 overflow-visible md:overflow-hidden">
   <!-- Background -->
   <img src="logos/carros-dsclima.webp" alt="" class="absolute inset-0 h-full w-full object-cover blur-sm"/>
   <div class="absolute inset-0 bg-black/50"></div>
