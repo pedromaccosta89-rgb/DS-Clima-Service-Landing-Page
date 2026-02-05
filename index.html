@@ -86,8 +86,16 @@
 
     #gallery { scroll-behavior: auto; }
 
+    #hero {
+      min-height: clamp(760px, 100svh, 920px);
+      height: auto;
+    }
+
     @media (min-width: 768px) {
-      #hero { height: clamp(680px, 75vh, 680px); }
+      #hero {
+        height: clamp(680px, 75vh, 680px);
+        min-height: 0;
+      }
     }
 
     /* Scrollbar hide (mantém funcionalidade) */
@@ -116,7 +124,7 @@
     class="h-7 md:h-8 w-auto"
   />
 </a>
-<div class="ml-auto flex items-center gap-2 pl-3">
+<div class="ml-auto flex items-center gap-2 pl-3 pr-[max(0.5rem,env(safe-area-inset-right))]">
 
   <!-- CTA (mobile compacto, desktop normal) -->
   <a
@@ -133,7 +141,7 @@
     href="/en/"
     rel="alternate"
     hreflang="en"
-    class="text-white/70 text-xs font-semibold px-2 py-2 rounded hover:bg-white/10 transition shrink-0"
+    id="lang-toggle-desktop" class="hidden md:inline-flex text-white text-xs font-semibold px-3 py-2 rounded-md bg-black/35 border border-white/25 hover:bg-black/45 transition shrink-0"
     aria-label="View website in English"
   >
     EN
@@ -143,8 +151,18 @@
 
  </header>
 
+<a
+  href="/en/"
+  rel="alternate"
+  hreflang="en"
+  id="lang-toggle-mobile" class="fixed top-16 right-3 z-[70] md:hidden inline-flex items-center justify-center rounded-md bg-black/45 border border-white/40 px-3 py-2 text-xs font-bold text-white shadow-lg transition-all duration-200"
+  aria-label="View website in English"
+>
+  EN
+</a>
+
 <!-- HERO -->
-<section id="hero" class="relative h-[98vh] md:h-[75vh] pb-16 md:pb-16 overflow-hidden">
+<section id="hero" class="relative pb-10 md:pb-16 overflow-visible md:overflow-hidden">
   <!-- Background -->
   <img src="logos/carros-dsclima.webp" alt="" class="absolute inset-0 h-full w-full object-cover blur-sm"/>
   <div class="absolute inset-0 bg-black/50"></div>
@@ -786,13 +804,20 @@
     <p class="text-center text-gray-600 mb-8">Se procura alguém que resolva, explique e acompanhe, deixe os seus dados.</p>
     
 
-    <form id="contacto" action="obrigado.html" method="POST" novalidate>
+    <form id="contacto-form" action="obrigado.php" method="POST" novalidate>
 
-      <div>
-        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Nome (Primeiro e último)</label>
-        
-        <input type="text" id="name" name="name"
-               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent" required/>
+      <div class="grid gap-4 md:grid-cols-2">
+        <div>
+          <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">Primeiro nome</label>
+          <input type="text" id="firstName" name="firstName" required
+                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
+        </div>
+
+        <div>
+          <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">Último nome</label>
+          <input type="text" id="lastName" name="lastName" required
+                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
+        </div>
       </div>
 
       <div>
@@ -1229,12 +1254,39 @@
 
 <!-- ---------- Validação do form (versão afinada v2) ---------- -->
 <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggles = [
+      document.getElementById('lang-toggle-desktop'),
+      document.getElementById('lang-toggle-mobile')
+    ].filter(Boolean);
+    const secondFold = document.getElementById('confianca');
+
+    if (!toggles.length || !secondFold) return;
+
+    function updateLangToggleVisibility() {
+      const cutoff = secondFold.getBoundingClientRect().top + window.scrollY - 8;
+      const hide = window.scrollY >= cutoff;
+
+      toggles.forEach((el) => {
+        el.style.opacity = hide ? '0' : '1';
+        el.style.pointerEvents = hide ? 'none' : '';
+      });
+    }
+
+    updateLangToggleVisibility();
+    window.addEventListener('scroll', updateLangToggleVisibility, { passive: true });
+    window.addEventListener('resize', updateLangToggleVisibility);
+  });
+</script>
+
+<script>
 (function () {
-  const form = document.getElementById("contacto");
+  const form = document.getElementById("contacto-form");
   if (!form) return;
 
   const el = {
-    name: document.getElementById("name"),
+    firstName: document.getElementById("firstName"),
+    lastName: document.getElementById("lastName"),
     email: document.getElementById("email"),
     phone: document.getElementById("phone"),
     setor: document.getElementById("setor"),
@@ -1269,21 +1321,36 @@
     return true;
   }
 
-  function validateName() {
-    if (!el.name) return true;
-    const v = trim(el.name.value);
-    const parts = v.split(/\s+/).filter(Boolean);
+  function isValidPersonName(value) {
+    const v = trim(value);
+    if (v.length < 2) return false;
+    if (!/[A-Za-zÀ-ÖØ-öø-ÿ]/.test(v)) return false;
+    return true;
+  }
 
-    if (parts.length < 2) {
-      setFieldValidity(el.name, "Introduza nome e apelido.");
+  function validateFirstName() {
+    if (!el.firstName) return true;
+    const v = trim(el.firstName.value);
+
+    if (!isValidPersonName(v)) {
+      setFieldValidity(el.firstName, "Introduza um primeiro nome válido.");
       return false;
     }
-    if (v.length < 5) {
-      setFieldValidity(el.name, "Introduza um nome completo válido.");
+
+    setFieldValidity(el.firstName, "");
+    return true;
+  }
+
+  function validateLastName() {
+    if (!el.lastName) return true;
+    const v = trim(el.lastName.value);
+
+    if (!isValidPersonName(v)) {
+      setFieldValidity(el.lastName, "Introduza um último nome válido.");
       return false;
     }
 
-    setFieldValidity(el.name, "");
+    setFieldValidity(el.lastName, "");
     return true;
   }
 
@@ -1328,9 +1395,8 @@
     if (!el.message) return true;
     const v = trim(el.message.value);
 
-    // se queres mesmo impedir vazio:
-    if (v.length < 10) {
-      setFieldValidity(el.message, "Escreva uma mensagem curta (mín. 10 caracteres).");
+    if (v.length > 0 && v.length < 10) {
+      setFieldValidity(el.message, "Se escrever mensagem, use pelo menos 10 caracteres.");
       return false;
     }
 
@@ -1339,7 +1405,8 @@
   }
 
   // limpar erros ao escrever/alterar
-  el.name?.addEventListener("input", () => setFieldValidity(el.name, ""));
+  el.firstName?.addEventListener("input", () => setFieldValidity(el.firstName, ""));
+  el.lastName?.addEventListener("input", () => setFieldValidity(el.lastName, ""));
   el.email?.addEventListener("input", () => setFieldValidity(el.email, ""));
   el.phone?.addEventListener("input", () => setFieldValidity(el.phone, ""));
   el.setor?.addEventListener("change", () => setFieldValidity(el.setor, ""));
@@ -1347,7 +1414,8 @@
   el.message?.addEventListener("input", () => setFieldValidity(el.message, ""));
 
   form.addEventListener("submit", function (e) {
-    const okName = validateName();
+    const okFirstName = validateFirstName();
+    const okLastName = validateLastName();
     const okEmail = validateEmail();
     const okPhone = validatePhone();
     const okSetor = validateSelect(el.setor, "Selecione um setor.");
@@ -1359,11 +1427,12 @@
     if (el.email) el.email.value = trim(el.email.value);
 
     // Só bloqueia se houver erro
-    if (!okName || !okEmail || !okPhone || !okSetor || !okService || !okMsg || !form.checkValidity()) {
+    if (!okFirstName || !okLastName || !okEmail || !okPhone || !okSetor || !okService || !okMsg || !form.checkValidity()) {
       e.preventDefault();
 
       // foca no primeiro erro (ordem importa)
-      if (!okName)   { el.name?.reportValidity();   el.name?.focus();   return; }
+      if (!okFirstName) { el.firstName?.reportValidity(); el.firstName?.focus(); return; }
+      if (!okLastName)  { el.lastName?.reportValidity();  el.lastName?.focus();  return; }
       if (!okEmail)  { el.email?.reportValidity();  el.email?.focus();  return; }
       if (!okPhone)  { el.phone?.reportValidity();  el.phone?.focus();  return; }
       if (!okSetor)  { el.setor?.reportValidity();  el.setor?.focus();  return; }
@@ -1382,7 +1451,7 @@
       btn.style.pointerEvents = "none";
     }
 
-    // ✅ Deixa o browser fazer o POST normal para action="obrigado.html"
+    // ✅ Deixa o browser fazer POST normal para action="obrigado.php"
   });
 })();
 </script>
@@ -1406,25 +1475,8 @@
 
 
 <script>
-  (function () {
-    const form = document.getElementById("contacto");
-    if (!form) return;
-
-    form.addEventListener("submit", function () {
-      const btn = form.querySelector('button[type="submit"], input[type="submit"]');
-      if (btn) {
-        btn.disabled = true;
-        btn.setAttribute("aria-disabled", "true");
-        btn.style.pointerEvents = "none";
-      }
-    });
-  })();
-</script>
-
-
-<script>
 (function () {
-  const form = document.getElementById("contacto");
+  const form = document.getElementById("contacto-form");
   if (!form) return;
 
   function cameFromBackForward(event) {
@@ -1448,7 +1500,11 @@
 
     // reativar botão submit, caso tenha ficado disabled
     const btn = form.querySelector('button[type="submit"], input[type="submit"]');
-    if (btn) btn.disabled = false;
+    if (btn) {
+      btn.disabled = false;
+      btn.removeAttribute("aria-disabled");
+      btn.style.pointerEvents = "";
+    }
   });
 })();
 </script>
