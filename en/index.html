@@ -144,7 +144,7 @@
         href="/"
         rel="alternate"
         hreflang="pt-PT"
-        class="text-white text-xs font-semibold px-3 py-2 rounded-md bg-black/35 border border-white/25 hover:bg-black/45 transition shrink-0"
+        class="hidden md:inline-flex text-white text-xs font-semibold px-3 py-2 rounded-md bg-black/35 border border-white/25 hover:bg-black/45 transition shrink-0"
         aria-label="Ver site em português"
       >
         PT
@@ -154,7 +154,15 @@
   </div>
 </header>
 
-
+<a
+  href="/"
+  rel="alternate"
+  hreflang="pt-PT"
+  class="fixed top-16 right-3 z-[70] md:hidden inline-flex items-center justify-center rounded-md bg-black/45 border border-white/40 px-3 py-2 text-xs font-bold text-white shadow-lg"
+  aria-label="Ver site em português"
+>
+  PT
+</a>
 
 <!-- HERO -->
 <section id="hero" class="relative pb-10 md:pb-16 overflow-visible md:overflow-hidden">
@@ -1090,12 +1098,12 @@
     const testimonials = [
       {
         author: '— Liliana Lisa',
-        pt: '"Reliable professionals. The service was carried out efficiently and on time."',
+        en: '"Reliable professionals. The service was carried out efficiently and on time."',
         photo: '../logos/lisa.webp'
       },
       {
         author: '— Bruno Neves',
-        pt: '"Excellent professional service. The work was carried out in our business premises on time. Highly recommended."',
+        en: '"Excellent professional service. The work was carried out in our business premises on time. Highly recommended."',
         photo: '../logos/bruno.webp'
       }
     ];
