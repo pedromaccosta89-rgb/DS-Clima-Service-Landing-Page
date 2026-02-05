@@ -818,7 +818,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="text-center text-gray-600 mb-8">Se procura alguém que resolva, explique e acompanhe, deixe os seus dados.</p>
     
 
-    <form id="contacto-form" action="obrigado.php" method="POST" novalidate>
+    <form id="contacto-form" action="/api/lead" method="POST" novalidate>
+      <input type="hidden" name="lang" value="pt"/>
+      <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="hidden"/>
 
       <div class="grid gap-4 md:grid-cols-2">
         <div>
@@ -1465,7 +1467,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       btn.style.pointerEvents = "none";
     }
 
-    // ✅ Deixa o browser fazer POST normal para action="obrigado.php"
+    // ✅ Deixa o browser fazer POST normal para action="/api/lead"
   });
 })();
 </script>
