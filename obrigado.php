@@ -117,7 +117,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     class="fixed top-0 z-50 w-full transition-all duration-300 bg-primary">
     <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
 
-      <a href="index_pt_residente_v2.html" class="flex items-center">
+      <a href="/" class="flex items-center">
         <img
           src="logos/Logo_Horizontal_ComDescriptor_Inverso_Editado.svg"
           alt="DS Clima Service"
@@ -218,7 +218,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             </a>
 
             <a
-              href="index_pt_residente_v2.html#servicos"
+              href="/#servicos"
               class="inline-flex items-center justify-center
                      rounded-full bg-white/90
                      px-6 py-4
