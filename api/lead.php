@@ -30,6 +30,20 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
 
 $lang = (strtolower(clean_field('lang')) === 'en') ? 'en' : 'pt';
 
+// Validação do código postal (distrito de Faro)
+$codigoPostal = clean_field('codigoPostal');
+if (!preg_match('/^\d{4}-\d{3}$/', $codigoPostal)) {
+  redirect_to(thank_you_url($lang, 'error', 'invalid_postal_code'));
+}
+$cp4 = substr($codigoPostal, 0, 4);
+$cpFaroFile = __DIR__ . '/codigos-postais-faro.json';
+$cpFaroValid = is_file($cpFaroFile)
+  ? json_decode((string)@file_get_contents($cpFaroFile), true)
+  : [];
+if (is_array($cpFaroValid) && !empty($cpFaroValid) && !in_array($cp4, $cpFaroValid, true)) {
+  redirect_to(thank_you_url($lang, 'error', 'outside_service_area'));
+}
+
 // Honeypot anti-spam
 if (clean_field('website') !== '') {
   redirect_to(thank_you_url($lang, 'error', 'spam'));
@@ -90,6 +104,7 @@ $payload = [
   'phone' => clean_field('phone'),
   'morada' => clean_field('morada'),
   'codigoPostal' => clean_field('codigoPostal'),
+  'localidade' => clean_field('localidade'),
   'setor' => clean_field('setor'),
   'service' => clean_field('service'),
   'message' => clean_field('message'),
