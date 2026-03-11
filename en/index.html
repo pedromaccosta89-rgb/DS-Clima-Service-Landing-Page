@@ -853,12 +853,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         
         <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Phone</label>
         <input type="tel" id="phone" name="phone"
-        		 placeholder="phone number"
+               placeholder="phone number"
                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent" required/>
       </div>
 
       <div>
-        
+        <label for="morada" class="block text-sm font-medium text-gray-700 mb-2">Address</label>
+        <input type="text" id="morada" name="morada" required
+               placeholder="ex.: Rua das Flores, nº 12, 1st floor"
+               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
+      </div>
+
+      <div>
+        <label for="codigoPostal" class="block text-sm font-medium text-gray-700 mb-2">Postal Code</label>
+        <input type="text" id="codigoPostal" name="codigoPostal" required
+               placeholder="ex.: 8600-592"
+               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
+      </div>
+
+      <div>
+
         <label for="setor" class="block text-sm font-medium text-gray-700 mb-2">Service is for</label>
         <select id="setor" name="setor"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent" required>
@@ -1354,6 +1368,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     lastName: document.getElementById("lastName"),
     email: document.getElementById("email"),
     phone: document.getElementById("phone"),
+    morada: document.getElementById("morada"),
+    codigoPostal: document.getElementById("codigoPostal"),
     setor: document.getElementById("setor"),
     service: document.getElementById("service"),
     message: document.getElementById("message"),
@@ -1456,6 +1472,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     return true;
   }
 
+  function validateMorada() {
+    if (!el.morada) return true;
+    const v = trim(el.morada.value);
+    if (v.length < 5) {
+      setFieldValidity(el.morada, "Please enter your full address.");
+      return false;
+    }
+    setFieldValidity(el.morada, "");
+    return true;
+  }
+
+  function validateCodigoPostal() {
+    if (!el.codigoPostal) return true;
+    const v = trim(el.codigoPostal.value);
+    if (!/^\d{4}-\d{3}$/.test(v)) {
+      setFieldValidity(el.codigoPostal, "Please enter a valid postal code (ex.: 8600-592).");
+      return false;
+    }
+    setFieldValidity(el.codigoPostal, "");
+    return true;
+  }
+
   function validateMessage() {
     if (!el.message) return true;
     const v = trim(el.message.value);
@@ -1473,6 +1511,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   el.lastName?.addEventListener("input", () => setFieldValidity(el.lastName, ""));
   el.email?.addEventListener("input", () => setFieldValidity(el.email, ""));
   el.phone?.addEventListener("input", () => setFieldValidity(el.phone, ""));
+  el.morada?.addEventListener("input", () => setFieldValidity(el.morada, ""));
+  el.codigoPostal?.addEventListener("input", () => setFieldValidity(el.codigoPostal, ""));
   el.setor?.addEventListener("change", () => setFieldValidity(el.setor, ""));
   el.service?.addEventListener("change", () => setFieldValidity(el.service, ""));
   el.message?.addEventListener("input", () => setFieldValidity(el.message, ""));
@@ -1482,6 +1522,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     const okLastName = validateLastName();
     const okEmail = validateEmail();
     const okPhone = validatePhone();
+    const okMorada = validateMorada();
+    const okCodigoPostal = validateCodigoPostal();
     const okSetor = validateSelect(el.setor, "Please select a sector.");
     const okService = validateSelect(el.service, "Please select a service.");
     const okMsg = validateMessage();
@@ -1489,16 +1531,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if (el.phone) el.phone.value = normalizePhone(el.phone.value);
     if (el.email) el.email.value = trim(el.email.value);
 
-    if (!okFirstName || !okLastName || !okEmail || !okPhone || !okSetor || !okService || !okMsg || !form.checkValidity()) {
+    if (!okFirstName || !okLastName || !okEmail || !okPhone || !okMorada || !okCodigoPostal || !okSetor || !okService || !okMsg || !form.checkValidity()) {
       e.preventDefault();
 
-      if (!okFirstName) { el.firstName?.reportValidity(); el.firstName?.focus(); return; }
-      if (!okLastName) { el.lastName?.reportValidity(); el.lastName?.focus(); return; }
-      if (!okEmail) { el.email?.reportValidity(); el.email?.focus(); return; }
-      if (!okPhone) { el.phone?.reportValidity(); el.phone?.focus(); return; }
-      if (!okSetor) { el.setor?.reportValidity(); el.setor?.focus(); return; }
-      if (!okService) { el.service?.reportValidity(); el.service?.focus(); return; }
-      if (!okMsg) { el.message?.reportValidity(); el.message?.focus(); return; }
+      if (!okFirstName)    { el.firstName?.reportValidity();    el.firstName?.focus();    return; }
+      if (!okLastName)     { el.lastName?.reportValidity();     el.lastName?.focus();     return; }
+      if (!okEmail)        { el.email?.reportValidity();        el.email?.focus();        return; }
+      if (!okPhone)        { el.phone?.reportValidity();        el.phone?.focus();        return; }
+      if (!okMorada)       { el.morada?.reportValidity();       el.morada?.focus();       return; }
+      if (!okCodigoPostal) { el.codigoPostal?.reportValidity(); el.codigoPostal?.focus(); return; }
+      if (!okSetor)        { el.setor?.reportValidity();        el.setor?.focus();        return; }
+      if (!okService)      { el.service?.reportValidity();      el.service?.focus();      return; }
+      if (!okMsg)          { el.message?.reportValidity();      el.message?.focus();      return; }
 
       form.reportValidity();
       return;
