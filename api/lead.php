@@ -49,9 +49,18 @@ if (clean_field('website') !== '') {
   redirect_to(thank_you_url($lang, 'error', 'spam'));
 }
 
-$ipRaw = (string)($_SERVER['HTTP_X_FORWARDED_FOR'] ?? ($_SERVER['REMOTE_ADDR'] ?? ''));
-$ipParts = explode(',', $ipRaw);
-$ip = trim(isset($ipParts[0]) ? $ipParts[0] : '');
+// Usar REMOTE_ADDR como IP de confiança; X-Forwarded-For só se vier de proxy local (127.x ou 10.x)
+$remoteAddr = (string)($_SERVER['REMOTE_ADDR'] ?? '');
+$ipRaw = $remoteAddr;
+$trustedProxyPattern = '/^(127\.|10\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.)/';
+if (preg_match($trustedProxyPattern, $remoteAddr) && isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+  $fwdParts = explode(',', (string)$_SERVER['HTTP_X_FORWARDED_FOR']);
+  $candidate = trim($fwdParts[0]);
+  if (filter_var($candidate, FILTER_VALIDATE_IP)) {
+    $ipRaw = $candidate;
+  }
+}
+$ip = $ipRaw;
 $ipKey = preg_replace('/[^a-zA-Z0-9:.\-_]/', '_', ($ip !== '' ? $ip : 'unknown'));
 
 // Basic file-based IP rate limit: 3 requests / 10 min
@@ -96,12 +105,24 @@ if (count($history) >= $maxRequests) {
 $history[] = $now;
 @file_put_contents($rateFile, json_encode($history));
 
+// Validação server-side de email e telefone
+$email = clean_field('email');
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+  redirect_to(thank_you_url($lang, 'error', 'invalid_email'));
+}
+
+$phone = clean_field('phone');
+$phoneNorm = preg_replace('/[()\s.\-]/', '', $phone);
+if (!preg_match('/^\+?\d{9,15}$/', $phoneNorm) || preg_match('/^(\d)\1+$/', $phoneNorm)) {
+  redirect_to(thank_you_url($lang, 'error', 'invalid_phone'));
+}
+
 $payload = [
   'lang' => $lang,
   'firstName' => clean_field('firstName'),
   'lastName' => clean_field('lastName'),
-  'email' => clean_field('email'),
-  'phone' => clean_field('phone'),
+  'email' => $email,
+  'phone' => $phoneNorm,
   'morada' => clean_field('morada'),
   'codigoPostal' => clean_field('codigoPostal'),
   'localidade' => clean_field('localidade'),
