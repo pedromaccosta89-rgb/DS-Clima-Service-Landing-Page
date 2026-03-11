@@ -1,7 +1,12 @@
 <?php
 declare(strict_types=1);
 
-$makeWebhook = 'https://hook.eu2.make.com/rqwaw3g4ldz8vpxp3rl669q9fklv5534';
+$makeWebhook = getenv('MAKE_WEBHOOK_URL');
+if (empty($makeWebhook)) {
+  http_response_code(500);
+  error_log('MAKE_WEBHOOK_URL não configurado');
+  exit;
+}
 
 function clean_field($key) {
   return trim((string)($_POST[$key] ?? ''));
