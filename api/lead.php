@@ -8,6 +8,13 @@ if (empty($makeWebhook)) {
   exit;
 }
 
+$makeSecret = getenv('MAKE_WEBHOOK_SECRET');
+if (empty($makeSecret)) {
+  http_response_code(500);
+  error_log('MAKE_WEBHOOK_SECRET não configurado');
+  exit;
+}
+
 function clean_field($key) {
   return trim((string)($_POST[$key] ?? ''));
 }
@@ -152,7 +159,7 @@ if (function_exists('curl_init')) {
   curl_setopt_array($ch, [
     CURLOPT_POST => true,
     CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
+    CURLOPT_HTTPHEADER => ['Content-Type: application/json', 'X-DS-Secret: ' . $makeSecret],
     CURLOPT_POSTFIELDS => $jsonPayload,
     CURLOPT_TIMEOUT => 12,
   ]);
@@ -169,7 +176,7 @@ if (function_exists('curl_init')) {
   $context = stream_context_create([
     'http' => [
       'method' => 'POST',
-      'header' => "Content-Type: application/json\r\n",
+      'header' => "Content-Type: application/json\r\nX-DS-Secret: " . $makeSecret . "\r\n",
       'content' => $jsonPayload,
       'timeout' => 12,
     ],
