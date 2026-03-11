@@ -159,7 +159,7 @@ if (function_exists('curl_init')) {
   curl_setopt_array($ch, [
     CURLOPT_POST => true,
     CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_HTTPHEADER => ['Content-Type: application/json', 'X-DS-Secret: ' . $makeSecret],
+    CURLOPT_HTTPHEADER => ['Content-Type: application/json', 'x-make-apikey: ' . $makeSecret],
     CURLOPT_POSTFIELDS => $jsonPayload,
     CURLOPT_TIMEOUT => 12,
   ]);
@@ -176,7 +176,7 @@ if (function_exists('curl_init')) {
   $context = stream_context_create([
     'http' => [
       'method' => 'POST',
-      'header' => "Content-Type: application/json\r\nX-DS-Secret: " . $makeSecret . "\r\n",
+      'header' => "Content-Type: application/json\r\nx-make-apikey: " . $makeSecret . "\r\n",
       'content' => $jsonPayload,
       'timeout' => 12,
     ],
