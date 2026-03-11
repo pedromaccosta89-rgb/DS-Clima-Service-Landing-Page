@@ -864,11 +864,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
       </div>
 
-      <div>
-        <label for="codigoPostal" class="block text-sm font-medium text-gray-700 mb-2">Postal Code</label>
-        <input type="text" id="codigoPostal" name="codigoPostal" required
-               placeholder="ex.: 8600-592"
-               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
+      <div class="grid gap-4 md:grid-cols-2">
+        <div>
+          <label for="codigoPostal" class="block text-sm font-medium text-gray-700 mb-2">Postal Code</label>
+          <input type="text" id="codigoPostal" name="codigoPostal" required
+                 placeholder="ex.: 8600-252"
+                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
+        </div>
+        <div>
+          <label for="localidade" class="block text-sm font-medium text-gray-700 mb-2">Town / City</label>
+          <input type="text" id="localidade" name="localidade" required
+                 placeholder="ex.: Lagos"
+                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
+        </div>
       </div>
 
       <div>
@@ -1370,6 +1378,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     phone: document.getElementById("phone"),
     morada: document.getElementById("morada"),
     codigoPostal: document.getElementById("codigoPostal"),
+    localidade: document.getElementById("localidade"),
     setor: document.getElementById("setor"),
     service: document.getElementById("service"),
     message: document.getElementById("message"),
@@ -1483,14 +1492,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     return true;
   }
 
+  const cpFaro = ["8000","8004","8005","8009","8100","8104","8125","8135","8136","8150","8200","8201","8203","8300","8365","8375","8400","8401","8500","8501","8550","8600","8601","8604","8650","8670","8700","8800","8801","8804","8900","8950","8954","8970"];
+
   function validateCodigoPostal() {
     if (!el.codigoPostal) return true;
     const v = trim(el.codigoPostal.value);
     if (!/^\d{4}-\d{3}$/.test(v)) {
-      setFieldValidity(el.codigoPostal, "Please enter a valid postal code (ex.: 8600-592).");
+      setFieldValidity(el.codigoPostal, "Please enter a valid postal code (ex.: 8600-252).");
+      return false;
+    }
+    const cp4 = v.substring(0, 4);
+    if (!cpFaro.includes(cp4)) {
+      setFieldValidity(el.codigoPostal, "This postal code is outside our service area (Faro District).");
       return false;
     }
     setFieldValidity(el.codigoPostal, "");
+    return true;
+  }
+
+  function validateLocalidade() {
+    if (!el.localidade) return true;
+    const v = trim(el.localidade.value);
+    if (v.length < 2) {
+      setFieldValidity(el.localidade, "Please enter your town or city.");
+      return false;
+    }
+    setFieldValidity(el.localidade, "");
     return true;
   }
 
@@ -1513,6 +1540,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   el.phone?.addEventListener("input", () => setFieldValidity(el.phone, ""));
   el.morada?.addEventListener("input", () => setFieldValidity(el.morada, ""));
   el.codigoPostal?.addEventListener("input", () => setFieldValidity(el.codigoPostal, ""));
+  el.localidade?.addEventListener("input", () => setFieldValidity(el.localidade, ""));
   el.setor?.addEventListener("change", () => setFieldValidity(el.setor, ""));
   el.service?.addEventListener("change", () => setFieldValidity(el.service, ""));
   el.message?.addEventListener("input", () => setFieldValidity(el.message, ""));
@@ -1524,6 +1552,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     const okPhone = validatePhone();
     const okMorada = validateMorada();
     const okCodigoPostal = validateCodigoPostal();
+    const okLocalidade = validateLocalidade();
     const okSetor = validateSelect(el.setor, "Please select a sector.");
     const okService = validateSelect(el.service, "Please select a service.");
     const okMsg = validateMessage();
@@ -1531,7 +1560,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if (el.phone) el.phone.value = normalizePhone(el.phone.value);
     if (el.email) el.email.value = trim(el.email.value);
 
-    if (!okFirstName || !okLastName || !okEmail || !okPhone || !okMorada || !okCodigoPostal || !okSetor || !okService || !okMsg || !form.checkValidity()) {
+    if (!okFirstName || !okLastName || !okEmail || !okPhone || !okMorada || !okCodigoPostal || !okLocalidade || !okSetor || !okService || !okMsg || !form.checkValidity()) {
       e.preventDefault();
 
       if (!okFirstName)    { el.firstName?.reportValidity();    el.firstName?.focus();    return; }
@@ -1540,6 +1569,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       if (!okPhone)        { el.phone?.reportValidity();        el.phone?.focus();        return; }
       if (!okMorada)       { el.morada?.reportValidity();       el.morada?.focus();       return; }
       if (!okCodigoPostal) { el.codigoPostal?.reportValidity(); el.codigoPostal?.focus(); return; }
+      if (!okLocalidade)   { el.localidade?.reportValidity();   el.localidade?.focus();   return; }
       if (!okSetor)        { el.setor?.reportValidity();        el.setor?.focus();        return; }
       if (!okService)      { el.service?.reportValidity();      el.service?.focus();      return; }
       if (!okMsg)          { el.message?.reportValidity();      el.message?.focus();      return; }

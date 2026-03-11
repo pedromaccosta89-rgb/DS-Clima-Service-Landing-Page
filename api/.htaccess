@@ -1,0 +1,5 @@
+# Bloquear acesso directo a ficheiros JSON e PHP que não sejam endpoints
+<FilesMatch "\.(json)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
