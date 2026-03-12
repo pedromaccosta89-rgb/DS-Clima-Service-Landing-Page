@@ -957,7 +957,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <h3 class="font-bold text-lg mb-4">Contact</h3>
         <ul class="text-sm space-y-2">
           <li><a href="tel:+351961653736" class="text-gray-300 hover:text-accent transition">+351 961 653 736</a></li>
-          <li><a href="mailto:geral@dsclima.pt" class="text-gray-300 hover:text-accent transition">geral@dsclima.pt</a></li>
+          <li><a href="#" class="text-gray-300 hover:text-accent transition email-obf" data-u="geral" data-d="dsclimaservice.pt"></a></li>
           
           <li class="text-gray-300">R. José Afonso 7 Store 4, 8600-592 Lagos</li>
         </ul>
@@ -1586,6 +1586,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
   });
 })();
+</script>
+
+<script>
+  document.querySelectorAll('.email-obf').forEach(function(el) {
+    var u = el.getAttribute('data-u');
+    var d = el.getAttribute('data-d');
+    var email = u + '@' + d;
+    el.textContent = email;
+    el.href = 'mailto:' + email;
+  });
 </script>
 
 </body>
