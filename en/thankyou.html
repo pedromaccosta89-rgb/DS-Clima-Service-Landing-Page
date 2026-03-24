@@ -195,9 +195,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </a>
             </li>
             <li>
-              <a href="mailto:geral@dsclima.pt" class="text-gray-300 hover:text-accent transition">
-                geral@dsclima.pt
-              </a>
+              <a href="#" class="text-gray-300 hover:text-accent transition email-obf" data-u="geral" data-d="dsclimaservice.pt"></a>
             </li>
             <li class="text-gray-300">
               R. José Afonso 7 Loja 4, 8600-592 Lagos
@@ -227,6 +225,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   });
 </script>
 
+<script>
+  document.querySelectorAll('.email-obf').forEach(function(el) {
+    var u = el.getAttribute('data-u');
+    var d = el.getAttribute('data-d');
+    var email = u + '@' + d;
+    el.textContent = email;
+    el.href = 'mailto:' + email;
+  });
+</script>
 
 </body>
 </html>
