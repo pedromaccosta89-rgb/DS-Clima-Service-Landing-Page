@@ -118,6 +118,7 @@ $payload = [
   'postal_code'  => clean_field('codigoPostal'),
   'city'         => clean_field('localidade'),
   'remark'       => implode(' | ', $remarkParts),
+  'source'       => 'formulario-lp',
   'sourceUrl'    => (string)($_SERVER['HTTP_REFERER'] ?? ''),
   'submittedAt'  => gmdate('c'),
   'ip'           => $ip,
