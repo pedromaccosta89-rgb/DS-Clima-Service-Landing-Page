@@ -49,9 +49,18 @@ if (clean_field('website') !== '') {
   redirect_to(thank_you_url($lang, 'error', 'spam'));
 }
 
-$ipRaw = (string)($_SERVER['HTTP_X_FORWARDED_FOR'] ?? ($_SERVER['REMOTE_ADDR'] ?? ''));
-$ipParts = explode(',', $ipRaw);
-$ip = trim(isset($ipParts[0]) ? $ipParts[0] : '');
+// Usar REMOTE_ADDR como IP de confiança; X-Forwarded-For só se vier de proxy local (127.x ou 10.x)
+$remoteAddr = (string)($_SERVER['REMOTE_ADDR'] ?? '');
+$ipRaw = $remoteAddr;
+$trustedProxyPattern = '/^(127\.|10\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.)/';
+if (preg_match($trustedProxyPattern, $remoteAddr) && isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+  $fwdParts = explode(',', (string)$_SERVER['HTTP_X_FORWARDED_FOR']);
+  $candidate = trim($fwdParts[0]);
+  if (filter_var($candidate, FILTER_VALIDATE_IP)) {
+    $ipRaw = $candidate;
+  }
+}
+$ip = $ipRaw;
 $ipKey = preg_replace('/[^a-zA-Z0-9:.\-_]/', '_', ($ip !== '' ? $ip : 'unknown'));
 
 // Basic file-based IP rate limit: 3 requests / 10 min
@@ -126,7 +135,7 @@ if (function_exists('curl_init')) {
   curl_setopt_array($ch, [
     CURLOPT_POST => true,
     CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
+    CURLOPT_HTTPHEADER => ['Content-Type: application/json', 'x-make-apikey: ' . $makeSecret],
     CURLOPT_POSTFIELDS => $jsonPayload,
     CURLOPT_TIMEOUT => 12,
   ]);
@@ -143,7 +152,7 @@ if (function_exists('curl_init')) {
   $context = stream_context_create([
     'http' => [
       'method' => 'POST',
-      'header' => "Content-Type: application/json\r\n",
+      'header' => "Content-Type: application/json\r\nx-make-apikey: " . $makeSecret . "\r\n",
       'content' => $jsonPayload,
       'timeout' => 12,
     ],
