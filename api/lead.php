@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-$makeWebhook = 'https://hook.eu2.make.com/rqwaw3g4ldz8vpxp3rl669q9fklv5534';
+$makeWebhook = 'https://hook.eu1.make.com/cmpn1c42bkhn3vwvc5j2ldo98xmdflam';
 
 function clean_field($key) {
   return trim((string)($_POST[$key] ?? ''));
@@ -96,22 +96,27 @@ if (count($history) >= $maxRequests) {
 $history[] = $now;
 @file_put_contents($rateFile, json_encode($history));
 
+$firstName = clean_field('firstName');
+$lastName  = clean_field('lastName');
+$service   = clean_field('service');
+$setor     = clean_field('setor');
+$message   = clean_field('message');
+
+$remarkParts = array_filter([$setor, $service, $message]);
+
 $payload = [
-  'lang' => $lang,
-  'firstName' => clean_field('firstName'),
-  'lastName' => clean_field('lastName'),
-  'email' => clean_field('email'),
-  'phone' => clean_field('phone'),
-  'morada' => clean_field('morada'),
-  'codigoPostal' => clean_field('codigoPostal'),
-  'localidade' => clean_field('localidade'),
-  'setor' => clean_field('setor'),
-  'service' => clean_field('service'),
-  'message' => clean_field('message'),
-  'sourceUrl' => (string)($_SERVER['HTTP_REFERER'] ?? ''),
-  'submittedAt' => gmdate('c'),
-  'ip' => $ip,
-  'userAgent' => (string)($_SERVER['HTTP_USER_AGENT'] ?? ''),
+  'lang'         => $lang,
+  'name'         => trim($firstName . ' ' . $lastName),
+  'email'        => clean_field('email'),
+  'phone_number' => clean_field('phone'),
+  'street'       => clean_field('morada'),
+  'postal_code'  => clean_field('codigoPostal'),
+  'city'         => clean_field('localidade'),
+  'remark'       => implode(' | ', $remarkParts),
+  'sourceUrl'    => (string)($_SERVER['HTTP_REFERER'] ?? ''),
+  'submittedAt'  => gmdate('c'),
+  'ip'           => $ip,
+  'userAgent'    => (string)($_SERVER['HTTP_USER_AGENT'] ?? ''),
 ];
 
 $jsonPayload = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
