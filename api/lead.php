@@ -1,19 +1,7 @@
 <?php
 declare(strict_types=1);
 
-$makeWebhook = getenv('MAKE_WEBHOOK_URL');
-if (empty($makeWebhook)) {
-  http_response_code(500);
-  error_log('MAKE_WEBHOOK_URL não configurado');
-  exit;
-}
-
-$makeSecret = getenv('MAKE_WEBHOOK_SECRET');
-if (empty($makeSecret)) {
-  http_response_code(500);
-  error_log('MAKE_WEBHOOK_SECRET não configurado');
-  exit;
-}
+$makeWebhook = 'https://hook.eu1.make.com/cmpn1c42bkhn3vwvc5j2ldo98xmdflam';
 
 function clean_field($key) {
   return trim((string)($_POST[$key] ?? ''));
@@ -117,34 +105,23 @@ if (count($history) >= $maxRequests) {
 $history[] = $now;
 @file_put_contents($rateFile, json_encode($history));
 
-// Validação server-side de email e telefone
-$email = clean_field('email');
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-  redirect_to(thank_you_url($lang, 'error', 'invalid_email'));
-}
-
-$phone = clean_field('phone');
-$phoneNorm = preg_replace('/[()\s.\-]/', '', $phone);
-if (!preg_match('/^\+?\d{9,15}$/', $phoneNorm) || preg_match('/^(\d)\1+$/', $phoneNorm)) {
-  redirect_to(thank_you_url($lang, 'error', 'invalid_phone'));
-}
+$firstName = clean_field('firstName');
+$lastName  = clean_field('lastName');
+$remarkParts = array_filter([clean_field('setor'), clean_field('service'), clean_field('message')]);
 
 $payload = [
-  'lang' => $lang,
-  'firstName' => clean_field('firstName'),
-  'lastName' => clean_field('lastName'),
-  'email' => $email,
-  'phone' => $phoneNorm,
-  'morada' => clean_field('morada'),
-  'codigoPostal' => clean_field('codigoPostal'),
-  'localidade' => clean_field('localidade'),
-  'setor' => clean_field('setor'),
-  'service' => clean_field('service'),
-  'message' => clean_field('message'),
-  'sourceUrl' => (string)($_SERVER['HTTP_REFERER'] ?? ''),
-  'submittedAt' => gmdate('c'),
-  'ip' => $ip,
-  'userAgent' => (string)($_SERVER['HTTP_USER_AGENT'] ?? ''),
+  'lang'         => $lang,
+  'name'         => trim($firstName . ' ' . $lastName),
+  'email'        => clean_field('email'),
+  'phone_number' => clean_field('phone'),
+  'street'       => clean_field('morada'),
+  'postal_code'  => clean_field('codigoPostal'),
+  'city'         => clean_field('localidade'),
+  'remark'       => implode(' | ', $remarkParts),
+  'sourceUrl'    => (string)($_SERVER['HTTP_REFERER'] ?? ''),
+  'submittedAt'  => gmdate('c'),
+  'ip'           => $ip,
+  'userAgent'    => (string)($_SERVER['HTTP_USER_AGENT'] ?? ''),
 ];
 
 $jsonPayload = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
