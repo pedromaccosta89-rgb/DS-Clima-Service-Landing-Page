@@ -98,6 +98,7 @@ $history[] = $now;
 
 $firstName = clean_field('firstName');
 $lastName  = clean_field('lastName');
+$remarkParts = array_filter([clean_field('setor'), clean_field('service'), clean_field('message')]);
 
 $payload = [
   'lang'         => $lang,
@@ -107,7 +108,7 @@ $payload = [
   'street'       => clean_field('morada'),
   'postal_code'  => clean_field('codigoPostal'),
   'city'         => clean_field('localidade'),
-  'remark'       => clean_field('message'),
+  'remark'       => implode(' | ', $remarkParts),
   'sourceUrl'    => (string)($_SERVER['HTTP_REFERER'] ?? ''),
   'submittedAt'  => gmdate('c'),
   'ip'           => $ip,
