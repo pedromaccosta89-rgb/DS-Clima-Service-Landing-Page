@@ -301,9 +301,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p id="testimonial-author" class="text-xs font-semibold text-gray-500 transition-opacity duration-500">— Liliana Lisa</p>
 
       <div class="mt-0 flex gap-3 items-start">
-        <img id="testimonial-photo" src="logos/lisa.webp"
-        alt="Fotografia da cliente Liliana Lisa"
-             class="h-11 w-11 rounded-xl object-cover transition-opacity duration-500"/>
+        <div id="testimonial-photo"
+             class="h-11 w-11 rounded-xl overflow-hidden flex-shrink-0 transition-opacity duration-500"
+             aria-hidden="true">
+        </div>
 
         <p id="testimonial-text" class="text-sm font-medium leading-snug text-gray-900 transition-opacity duration-500">
           "Profissionais de confiança. Serviço bem executado e dentro do tempo previsto."
@@ -1071,6 +1072,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- ---------- Galeria: loop manual + botões ---------- -->
 <script>
+  function getGalleryStep(el) {
+    const firstCard = el.querySelector('.flex-none');
+    const gap = parseFloat(getComputedStyle(el).columnGap) || 0;
+    return (firstCard ? firstCard.offsetWidth : 288) + gap;
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     const gallery = document.getElementById("gallery");
     if (!gallery) return;
@@ -1079,21 +1086,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     originalCards.forEach(card => gallery.appendChild(card.cloneNode(true)));
 
     let jumping = false;
-    const EPS = 2;
     gallery.addEventListener("scroll", () => {
       if (jumping) return;
       const half = gallery.scrollWidth / 2;
       const x = gallery.scrollLeft;
 
-      if (x >= half - EPS) {
+      if (x >= half) {
         jumping = true;
         gallery.classList.add("no-snap");
-        gallery.scrollLeft = x - half + EPS;
-        requestAnimationFrame(() => { gallery.classList.remove("no-snap"); jumping = false; });
-      } else if (x <= EPS) {
-        jumping = true;
-        gallery.classList.add("no-snap");
-        gallery.scrollLeft = x + half - EPS;
+        gallery.scrollLeft = x - half;
         requestAnimationFrame(() => { gallery.classList.remove("no-snap"); jumping = false; });
       }
     });
@@ -1127,9 +1128,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   function scrollGallery(direction) {
     const el = document.getElementById("gallery");
     if (!el) return;
-    const cardWidth = 288;
-    const gap = 16;
-    el.scrollBy({ left: direction * (cardWidth + gap), behavior: "smooth" });
+    const step = getGalleryStep(el);
+    const half = el.scrollWidth / 2;
+
+    if (direction < 0 && el.scrollLeft < step) {
+      el.classList.add("no-snap");
+      el.scrollLeft = el.scrollLeft + half;
+      requestAnimationFrame(() => {
+        el.classList.remove("no-snap");
+        el.scrollBy({ left: -step, behavior: "smooth" });
+      });
+    } else {
+      el.scrollBy({ left: direction * step, behavior: "smooth" });
+    }
   }
 </script>
 
@@ -1247,8 +1258,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       },
       {
         author: '— Bruno Neves',
-        pt: '"Serviço profissional de excelência. Serviço realizado no espaço de negócio dentro do tempo acordado. Recomendado."',
+        pt: '"Serviço profissional de excelência, realizado no tempo acordado. Recomendado."',
         photo: 'logos/bruno.webp'
+      },
+      {
+        author: '— Rob H',
+        pt: '"Serviço excelente, com conhecimento técnico e total confiança. A nossa escolha para climatização."',
+        color: '#4a94b8'
+      },
+      {
+        author: '— E Berger',
+        pt: '"Profissionais, fiáveis e especialistas em climatização e solar. A nossa empresa de referência."',
+        color: '#013365'
+      },
+      {
+        author: '— Jimmy Bakker',
+        pt: '"Trabalhei com a DS Clima Service a nível pessoal e empresarial. Muito satisfeito com o resultado."',
+        color: '#3ec2f4'
+      },
+      {
+        author: '— Laura Grint',
+        pt: '"Resposta rápida ao problema de ar condicionado. Diagnóstico claro, peças originais e instalação eficiente."',
+        color: '#4a94b8'
       }
     ];
 
@@ -1260,59 +1291,40 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if (!card || !authorEl || !textEl || !photoEl) return;
 
     let index = 0;
-    let lockedHeight = 0;
 
-    function currentLang() { return 'pt'; }
-
-    function lockMaxHeight() {
-      const lang = currentLang();
-      const current = { author: authorEl.textContent, text: textEl.textContent, photo: photoEl.src };
-
-      let max = 0;
-      testimonials.forEach(t => {
-        authorEl.textContent = t.author;
-        textEl.textContent = t[lang];
-        photoEl.src = t.photo;
-        const h = card.getBoundingClientRect().height;
-        if (h > max) max = h;
-      });
-
-      authorEl.textContent = current.author;
-      textEl.textContent = current.text;
-      photoEl.src = current.photo;
-
-      lockedHeight = Math.ceil(max);
-      card.style.height = lockedHeight + 'px';
+    function renderPhoto(t) {
+      if (t.photo) {
+        const name = t.author.replace(/^—\s*/, '');
+        photoEl.innerHTML = `<img src="${t.photo}" alt="Fotografia de ${name}" class="h-full w-full object-cover"/>`;
+      } else {
+        const name = t.author.replace(/^—\s*/, '');
+        const initial = name.charAt(0).toUpperCase();
+        const color = t.color || '#013365';
+        photoEl.innerHTML = `<span class="h-full w-full flex items-center justify-center text-white font-bold text-base" style="background-color: ${color}">${initial}</span>`;
+      }
     }
 
     function setTestimonial(i) {
-      const lang = currentLang();
       authorEl.style.opacity = 0;
       textEl.style.opacity = 0;
       photoEl.style.opacity = 0;
 
       setTimeout(() => {
         authorEl.textContent = testimonials[i].author;
-        textEl.textContent = testimonials[i][lang];
-        photoEl.src = testimonials[i].photo;
+        textEl.textContent = testimonials[i].pt;
+        renderPhoto(testimonials[i]);
         authorEl.style.opacity = 1;
         textEl.style.opacity = 1;
         photoEl.style.opacity = 1;
       }, 300);
     }
 
-    lockMaxHeight();
-    setTestimonial(0);
+    renderPhoto(testimonials[0]);
 
     setInterval(() => {
       index = (index + 1) % testimonials.length;
       setTestimonial(index);
-    }, 3000);
-
-    window.addEventListener('resize', () => {
-      card.style.height = 'auto';
-      lockMaxHeight();
-    });
+    }, 4000);
   });
 </script>
 
