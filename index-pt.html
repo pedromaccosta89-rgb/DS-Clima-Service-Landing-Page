@@ -202,7 +202,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- Header -->
 <header id="site-header" class="fixed z-50 w-full transition-all duration-300 bg-transparent" style="top: 36px;">
-  <div class="max-w-6xl mx-auto px-4 py-4 flex items-center">
+  <div class="max-w-6xl mx-auto px-5 sm:px-6 py-4 flex items-center">
 
     <!-- Logo -->
    <a href="/" class="flex items-center shrink-0">
@@ -212,7 +212,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     class="h-7 md:h-8 w-auto"
   />
 </a>
-<div class="ml-auto flex items-center gap-2 pl-3 pr-[max(0.5rem,env(safe-area-inset-right))]">
+<div class="ml-auto relative flex items-center gap-2 pl-2 sm:pl-3 pr-[env(safe-area-inset-right)]">
 
   <!-- CTA (mobile compacto, desktop normal) -->
   <a
@@ -230,7 +230,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     href="/en/"
     rel="alternate"
     hreflang="en"
-    id="lang-toggle-desktop" class="hidden md:inline-flex text-white text-xs font-semibold px-3 py-2 rounded-md bg-black/35 border border-white/25 hover:bg-black/45 transition shrink-0"
+    id="lang-toggle-desktop" class="absolute right-0 top-full mt-1.5 sm:static sm:mt-0 inline-flex items-center text-white text-[10px] sm:text-xs font-semibold px-2 sm:px-3 py-1 sm:py-2 rounded-md bg-black/35 border border-white/25 hover:bg-black/45 transition shrink-0"
     aria-label="View website in English"
   >
     EN
@@ -239,16 +239,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
  </header>
-
-<a
-  href="/en/"
-  rel="alternate"
-  hreflang="en"
-  id="lang-toggle-mobile" class="fixed top-16 right-3 z-[70] md:hidden inline-flex items-center justify-center rounded-md bg-black/45 border border-white/40 px-3 py-2 text-xs font-bold text-white shadow-lg transition-all duration-200"
-  aria-label="View website in English"
->
-  EN
-</a>
 
 <!-- HERO -->
 <section id="hero" class="relative pb-6 md:pb-16 overflow-visible md:overflow-hidden">
@@ -261,7 +251,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="relative z-10 mx-auto max-w-6xl px-5 pt-10">
     <div class="max-w-[22rem] mt-20">
 
-      <h1 class="text-[1.6rem] sm:text-[1.9rem] md:text-[2.1rem] font-bold leading-[1.05] text-white pt-2 md:max-w-none">
+      <h1 class="text-[2.1rem] font-bold leading-[1.05] text-white pt-2 md:max-w-none">
         Climatização feita<br/>com compromisso.<br/>De quem cá está para ficar.
       </h1>
 
@@ -269,7 +259,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <!-- CTA pill -->
       <a href="#contacto"
-         class="relative mt-6 sm:mt-8 inline-flex items-center rounded-full bg-white pl-4 sm:pl-5 pr-14 sm:pr-20 py-3 sm:py-4 text-sm sm:text-[16px] font-bold text-primary shadow-md">
+         class="relative mt-8 inline-flex items-center rounded-full bg-white pl-5 pr-20 py-4 text-[16px] font-bold text-primary shadow-md">
         <span class="whitespace-nowrap">MARCAR DIAGNÓSTICO</span>
 
 
@@ -281,9 +271,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
 
       <!-- Micro copy -->
-      <div class="mt-6 sm:mt-8 space-y-2 sm:space-y-3 text-sm sm:text-[18px] leading-snug text-white/85 md:w-[45rem] md:max-w-none md:text-[22px]">
+      <div class="mt-8 space-y-3 text-[18px] leading-snug text-white/85 md:w-[45rem] md:max-w-none md:text-[22px]">
         <p>Serviço de climatização no Barlavento Algarvio</p>
-        <ul class="list-disc space-y-1 pl-4 sm:pl-5 text-xs sm:text-[17px] md:pl-6 md:text-[20px]">
+        <ul class="list-disc space-y-1 pl-5 text-[17px] md:pl-6 md:text-[20px]">
           <li>Instalação de ar condicionado</li>
           <li>Bombas de calor</li>
           <li>Painéis solares • Energias Renováveis</li>
@@ -320,7 +310,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="max-w-5xl mx-auto px-6 py-14 pt-10">
 
     <div class="text-center">
-      <h2 class="mt-1 text-xl sm:text-2xl md:text-3xl font-bold text-primary">
+      <h2 class="mt-1 text-2xl sm:text-2xl md:text-3xl font-bold text-primary">
         Quando a instalação termina, o acompanhamento não termina.
       </h2>
 
@@ -355,7 +345,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </svg>
         </div>
 
-        <h3 class="text-lg sm:text-2xl font-bold text-primary text-center">Acompanhamento</h3>
+        <h3 class="text-2xl font-bold text-primary text-center">Acompanhamento</h3>
 
 
         <p class="mt-2 text-gray-800 text-sm leading-relaxed text-center">
@@ -381,7 +371,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </svg>
         </div>
 
-        <h3 class="text-lg sm:text-2xl font-bold text-primary text-center">Clareza</h3>
+        <h3 class="text-2xl font-bold text-primary text-center">Clareza</h3>
 
 
         <p class="mt-2 text-gray-800 text-sm leading-relaxed text-center">
@@ -407,7 +397,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </svg>
         </div>
 
-        <h3 class="text-lg sm:text-2xl font-bold text-primary text-center">Trabalho Bem Feito</h3>
+        <h3 class="text-2xl font-bold text-primary text-center">Trabalho Bem Feito</h3>
 
 
         <p class="mt-2 text-gray-800 text-sm leading-relaxed text-center">
@@ -626,7 +616,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- CTA DOBRA 3 -->
   <div class="mt-10 mb-6 flex justify-center bg-primary">
     <a href="#contacto"
-       class="relative inline-flex items-center rounded-full bg-white pl-4 sm:pl-6 pr-14 sm:pr-20 py-3 sm:py-4 text-sm sm:text-[16px] font-bold text-primary shadow-lg hover:bg-secondary transition">
+       class="relative inline-flex items-center rounded-full bg-white pl-6 pr-20 py-4 text-[16px] font-bold text-primary shadow-lg hover:bg-secondary transition">
       <span class="whitespace-nowrap">MARCAR DIAGNÓSTICO TÉCNICO</span>
 
       <span class="absolute right-2 top-1/2 -translate-y-1/2 grid h-10 w-10 place-items-center rounded-full bg-accent text-white">
@@ -715,8 +705,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                   d="M9 7h6M9 11h6M9 15h6M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/>
           </svg>
         </div>
-        <p class="mt-4 sm:mt-6 text-white text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">+500</p>
-        <p class="mt-1 text-white/90 text-xs sm:text-sm md:text-base font-semibold uppercase tracking-wide">Serviços realizados em 2025</p>
+        <p class="mt-6 text-white text-3xl md:text-4xl font-extrabold tracking-tight">+500</p>
+        <p class="mt-1 text-white/90 text-sm md:text-base font-semibold uppercase tracking-wide">Serviços realizados em 2025</p>
         <p class="mt-2 text-white/75 text-sm leading-relaxed">Instalações, manutenções e reparações na nossa zona de atuação.</p>
       </div>
 
@@ -727,8 +717,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                   d="M12 3v3m0 12v3m9-9h-3M6 12H3m15.364-6.364l-2.121 2.121M8.757 15.243l-2.121 2.121m0-11.485l2.121 2.121m9.486 9.486l2.121 2.121"/>
           </svg>
         </div>
-        <p class="mt-4 sm:mt-6 text-white text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">18 Anos no Terreno</p>
-        <p class="mt-1 text-white/90 text-xs sm:text-sm md:text-base font-semibold uppercase tracking-wide">Conhecimento técnico da nossa zona</p>
+        <p class="mt-6 text-white text-3xl md:text-4xl font-extrabold tracking-tight">18 Anos no Terreno</p>
+        <p class="mt-1 text-white/90 text-sm md:text-base font-semibold uppercase tracking-wide">Conhecimento técnico da nossa zona</p>
         <p class="mt-2 text-white/75 text-sm leading-relaxed">
           Intervenções contínuas em Lagos, Portimão, Lagoa, Burgau e Sagres,<br class="hidden md:block">
           e zonas envolventes com experiência prática em ambientes costeiros, humidade e uso intensivo dos sistemas.
@@ -741,8 +731,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V7l7-4z"/>
           </svg>
         </div>
-        <p class="mt-4 sm:mt-6 text-white text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">Certificado</p>
-        <p class="mt-1 text-white/90 text-xs sm:text-sm md:text-base font-semibold uppercase tracking-wide">Conformidade e segurança</p>
+        <p class="mt-6 text-white text-3xl md:text-4xl font-extrabold tracking-tight">Certificado</p>
+        <p class="mt-1 text-white/90 text-sm md:text-base font-semibold uppercase tracking-wide">Conformidade e segurança</p>
         <p class="mt-2 text-white/75 text-sm leading-relaxed">Técnicos certificados e intervenção profissional.</p>
       </div>
     </div>
@@ -763,7 +753,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="mt-10 grid gap-6 md:grid-cols-2">
       <div class="bg-gray-50 p-6 rounded-lg border border-gray-100">
         <h3 class="text-lg font-bold text-primary">Contrato de Manutenção Preventiva com ANS</h3>
-        <ul class="mt-3 space-y-1 sm:space-y-2 text-xs sm:text-sm text-gray-700">
+        <ul class="mt-3 space-y-1 sm:space-y-2 text-sm sm:text-sm text-gray-700">
           <li><strong>Tempo de resposta:</strong> acordado para situações críticas.</li>
           <li><strong>Conformidade:</strong> histórico de manutenção organizado para inspeções e auditorias.</li>
           <li><strong>Eficiência:</strong> otimização energética em sistemas de maior porte (VRV/Chillers).</li>
@@ -772,7 +762,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <div class="bg-gray-50 p-6 rounded-lg border border-gray-100">
         <h3 class="text-lg font-bold text-primary">Setores onde o impacto é imediato</h3>
-        <ul class="mt-3 space-y-1 sm:space-y-2 text-xs sm:text-sm text-gray-700">
+        <ul class="mt-3 space-y-1 sm:space-y-2 text-sm sm:text-sm text-gray-700">
           <li><strong>Restauração:</strong> perdas de stock e condições de trabalho insuportáveis.</li>
           <li><strong>Hotelaria:</strong> reclamações e reembolsos por falta de conforto.</li>
           <li><strong>Áreas Comerciais:</strong> interrupção da cadeia de frio e riscos de saúde pública.</li>
@@ -842,23 +832,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="mt-8 bg-white rounded-lg shadow-md border border-gray-100 p-4 sm:p-5 md:p-6 text-left max-w-xl mx-auto">
       <p class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-3 sm:mb-4">O que procuramos</p>
       <ul class="space-y-2 sm:space-y-3">
-        <li class="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-gray-700">
+        <li class="flex items-start gap-2 sm:gap-3 text-sm sm:text-sm text-gray-700">
           <span class="mt-1 h-2 w-2 rounded-full bg-accent flex-shrink-0"></span>
           Experiência em instalação/manutenção de ar condicionado
         </li>
-        <li class="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-gray-700">
+        <li class="flex items-start gap-2 sm:gap-3 text-sm sm:text-sm text-gray-700">
           <span class="mt-1 h-2 w-2 rounded-full bg-accent flex-shrink-0"></span>
           Carta de condução (categoria B)
         </li>
-        <li class="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-gray-700">
+        <li class="flex items-start gap-2 sm:gap-3 text-sm sm:text-sm text-gray-700">
           <span class="mt-1 h-2 w-2 rounded-full bg-accent flex-shrink-0"></span>
           Sentido de responsabilidade e boa apresentação
         </li>
-        <li class="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-gray-700">
+        <li class="flex items-start gap-2 sm:gap-3 text-sm sm:text-sm text-gray-700">
           <span class="mt-1 h-2 w-2 rounded-full bg-accent flex-shrink-0"></span>
           Disponibilidade para trabalho no Barlavento Algarvio
         </li>
-        <li class="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-gray-700">
+        <li class="flex items-start gap-2 sm:gap-3 text-sm sm:text-sm text-gray-700">
           <span class="mt-1 h-2 w-2 rounded-full bg-accent flex-shrink-0"></span>
           Certificado de gases fluorados <span class="ml-1 text-gray-400">(preferencial)</span>
         </li>
@@ -883,7 +873,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h2 class="text-2xl md:text-3xl font-bold text-primary text-center mb-4">Fale connosco antes de decidir</h2>
     <p class="text-center text-gray-600 mb-8">Se procura alguém que resolva, explique e acompanhe, deixe os seus dados.</p>
 
-    <form id="contacto-form" action="/api/lead/" method="POST" novalidate>
+    <form id="contacto-form" action="/api/lead/" method="POST" novalidate class="space-y-4">
       <input type="hidden" name="lang" value="pt"/>
       <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="hidden"/>
 
@@ -980,7 +970,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="grid gap-6 sm:gap-8 md:grid-cols-3">
 
       <div>
-        <h3 class="font-bold text-base sm:text-lg mb-3 sm:mb-4">DS Clima Service</h3>
+        <h3 class="font-bold text-lg sm:text-lg mb-3 sm:mb-4">DS Clima Service</h3>
         <p class="text-xs sm:text-sm text-gray-300">
           Instalação, manutenção e assistência técnica em Lagos, Portimão, Lagoa, Aljezur e Sagres.
         </p>
@@ -1364,8 +1354,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const toggles = [
-      document.getElementById('lang-toggle-desktop'),
-      document.getElementById('lang-toggle-mobile')
+      document.getElementById('lang-toggle-desktop')
     ].filter(Boolean);
     const secondFold = document.getElementById('confianca');
 
