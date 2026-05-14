@@ -131,7 +131,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
     .logo-item {
       width: var(--slot-w, 120px);
-      height: 32px;
+      height: clamp(24px, 5vw, 32px);
       padding: 0 6px;
       box-sizing: border-box;
       display: flex;
@@ -151,7 +151,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     #gallery { scroll-behavior: auto; }
 
     #hero {
-      min-height: clamp(760px, 100svh, 920px);
+      min-height: clamp(560px, 100svh, 920px);
       height: auto;
     }
 
@@ -182,8 +182,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
+<!-- BANNER RECRUTAMENTO -->
+<div id="recruit-banner"
+     class="fixed top-0 left-0 right-0 z-[60] bg-primary text-white text-xs sm:text-sm flex items-center justify-center gap-2 sm:gap-3 pr-10 pl-4 py-2.5 sm:py-2">
+  <span class="whitespace-nowrap">Vaga aberta</span>
+  <span class="text-white/40">·</span>
+  <span class="font-bold hidden sm:inline whitespace-nowrap">Técnico de Climatização</span>
+  <span class="text-white/40 hidden sm:inline">·</span>
+  <a href="#recrutamento"
+     class="underline underline-offset-2 font-semibold text-accent hover:text-white transition whitespace-nowrap">
+    Saber mais
+  </a>
+  <button onclick="dismissBanner()"
+          aria-label="Fechar banner"
+          class="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center text-white/60 hover:text-white text-xl leading-none transition">
+    ×
+  </button>
+</div>
+
 <!-- Header -->
-<header id="site-header" class="fixed top-0 z-50 w-full transition-colors duration-300 bg-transparent">
+<header id="site-header" class="fixed z-50 w-full transition-all duration-300 bg-transparent" style="top: 36px;">
   <div class="max-w-6xl mx-auto px-4 py-4 flex items-center">
 
     <!-- Logo -->
@@ -233,7 +251,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </a>
 
 <!-- HERO -->
-<section id="hero" class="relative pb-10 md:pb-16 overflow-visible md:overflow-hidden">
+<section id="hero" class="relative pb-6 md:pb-16 overflow-visible md:overflow-hidden">
   <!-- Background -->
   <img src="logos/carros-dsclima.webp" alt="" class="absolute inset-0 h-full w-full object-cover blur-sm"/>
   <div class="absolute inset-0 bg-black/50"></div>
@@ -243,7 +261,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="relative z-10 mx-auto max-w-6xl px-5 pt-10">
     <div class="max-w-[22rem] mt-20">
 
-      <h1 class="text-[2.1rem] font-bold leading-[1.05] text-white pt-2 md:max-w-none">
+      <h1 class="text-[1.6rem] sm:text-[1.9rem] md:text-[2.1rem] font-bold leading-[1.05] text-white pt-2 md:max-w-none">
         Climatização feita<br/>com compromisso.<br/>De quem cá está para ficar.
       </h1>
 
@@ -251,7 +269,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <!-- CTA pill -->
       <a href="#contacto"
-         class="relative mt-8 inline-flex items-center rounded-full bg-white px-10 pl-5 pr-20 py-4 text-[16px] font-bold text-primary shadow-md">
+         class="relative mt-6 sm:mt-8 inline-flex items-center rounded-full bg-white pl-4 sm:pl-5 pr-14 sm:pr-20 py-3 sm:py-4 text-sm sm:text-[16px] font-bold text-primary shadow-md">
         <span class="whitespace-nowrap">MARCAR DIAGNÓSTICO</span>
 
 
@@ -263,9 +281,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
 
       <!-- Micro copy -->
-      <div class="mt-8 space-y-3 text-[18px] leading-snug text-white/85 md:w-[45rem] md:max-w-none md:text-[22px]">
+      <div class="mt-6 sm:mt-8 space-y-2 sm:space-y-3 text-sm sm:text-[18px] leading-snug text-white/85 md:w-[45rem] md:max-w-none md:text-[22px]">
         <p>Serviço de climatização no Barlavento Algarvio</p>
-        <ul class="list-disc space-y-1 pl-5 text-[17px] md:pl-6 md:text-[20px]">
+        <ul class="list-disc space-y-1 pl-4 sm:pl-5 text-xs sm:text-[17px] md:pl-6 md:text-[20px]">
           <li>Instalação de ar condicionado</li>
           <li>Bombas de calor</li>
           <li>Painéis solares • Energias Renováveis</li>
@@ -280,13 +298,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- Testemunho FIXO -->
   <div class="max-w-5xl mx-auto px-6 mt-14 md:mt-10">
     <div id="testimonial-card"
-         class="mx-auto rounded-2xl bg-white/95 p-4 md:p-3 shadow-xl backdrop-blur max-w-full md:max-w-xl">
+         class="mx-4 sm:mx-auto rounded-2xl bg-white/95 p-3 sm:p-4 shadow-xl backdrop-blur max-w-full md:max-w-xl">
       <p id="testimonial-author" class="text-xs font-semibold text-gray-500 transition-opacity duration-500">— Liliana Lisa</p>
 
       <div class="mt-0 flex gap-3 items-start">
-        <img id="testimonial-photo" src="logos/lisa.webp"
-        alt="Fotografia da cliente Liliana Lisa"
-             class="h-11 w-11 rounded-xl object-cover transition-opacity duration-500"/>
+        <div id="testimonial-photo"
+             class="h-11 w-11 rounded-xl overflow-hidden flex-shrink-0 transition-opacity duration-500"
+             aria-hidden="true">
+        </div>
 
         <p id="testimonial-text" class="text-sm font-medium leading-snug text-gray-900 transition-opacity duration-500">
           "Profissionais de confiança. Serviço bem executado e dentro do tempo previsto."
@@ -301,8 +320,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="max-w-5xl mx-auto px-6 py-14 pt-10">
 
     <div class="text-center">
-      <h2 class="mt-1 text-2xl md:text-3xl font-bold text-primary">
-        Quando a instalação termina,<br class="md:hidden"/>o acompanhamento não termina.
+      <h2 class="mt-1 text-xl sm:text-2xl md:text-3xl font-bold text-primary">
+        Quando a instalação termina, o acompanhamento não termina.
       </h2>
 
 
@@ -327,16 +346,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <!-- 3 pilares -->
-    <div id="wa-trigger" class="mt-10 grid gap-6 md:grid-cols-3">
+    <div id="wa-trigger" class="mt-8 sm:mt-10 grid gap-4 sm:gap-6 md:grid-cols-3">
 
-      <article class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-        <div class="w-12 h-12 mb-4 bg-accent/10 rounded-lg flex items-center justify-center mx-auto">
+      <article class="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-100">
+        <div class="w-10 sm:w-12 h-10 sm:h-12 mb-3 sm:mb-4 bg-accent/10 rounded-lg flex items-center justify-center mx-auto">
           <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22s8-4 8-10V7l-8-4-8 4v5c0 6 8 10 8 10z"/>
           </svg>
         </div>
 
-        <h3 class="text-2xl font-bold text-primary text-center">Acompanhamento</h3>
+        <h3 class="text-lg sm:text-2xl font-bold text-primary text-center">Acompanhamento</h3>
 
 
         <p class="mt-2 text-gray-800 text-sm leading-relaxed text-center">
@@ -355,14 +374,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       </article>
 
-      <article class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-        <div class="w-12 h-12 mb-4 bg-accent/10 rounded-lg flex items-center justify-center mx-auto">
+      <article class="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-100">
+        <div class="w-10 sm:w-12 h-10 sm:h-12 mb-3 sm:mb-4 bg-accent/10 rounded-lg flex items-center justify-center mx-auto">
           <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
           </svg>
         </div>
 
-        <h3 class="text-2xl font-bold text-primary text-center">Clareza</h3>
+        <h3 class="text-lg sm:text-2xl font-bold text-primary text-center">Clareza</h3>
 
 
         <p class="mt-2 text-gray-800 text-sm leading-relaxed text-center">
@@ -381,14 +400,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       </article>
 
-      <article class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-        <div class="w-12 h-12 mb-4 bg-accent/10 rounded-lg flex items-center justify-center mx-auto">
+      <article class="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-100">
+        <div class="w-10 sm:w-12 h-10 sm:h-12 mb-3 sm:mb-4 bg-accent/10 rounded-lg flex items-center justify-center mx-auto">
           <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5-2c0-5.5-4.5-10-10-10S0 3 0 8c0 5.5 4.5 10 10 10s10-4.5 10-10z"/>
           </svg>
         </div>
 
-        <h3 class="text-2xl font-bold text-primary text-center">Trabalho Bem Feito</h3>
+        <h3 class="text-lg sm:text-2xl font-bold text-primary text-center">Trabalho Bem Feito</h3>
 
 
         <p class="mt-2 text-gray-800 text-sm leading-relaxed text-center">
@@ -422,11 +441,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 
   <div id="gallery"
-       class="mt-8 flex gap-4 overflow-x-auto snap-x snap-proximity scrollbar-hide select-none px-0 md:px-12"
+       class="mt-6 sm:mt-8 flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-proximity scrollbar-hide select-none px-4 sm:px-6 md:px-12"
        style="-webkit-overflow-scrolling:touch;">
 
     <!-- 1 — Ar condicionado | Residencial • Lagos -->
-    <div class="flex-none w-72 snap-center">
+    <div class="flex-none w-64 sm:w-72 snap-center">
       <article class="rounded-lg bg-white shadow-sm overflow-hidden">
         <div class="h-64">
           <img src="logos/trabalhos/instalacao-ar-condicionado-lagos-algarve.webp"
@@ -444,7 +463,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <!-- 2 — Bomba de calor | Residencial • Aljezur -->
-    <div class="flex-none w-72 snap-center">
+    <div class="flex-none w-64 sm:w-72 snap-center">
       <article class="rounded-lg bg-white shadow-sm overflow-hidden">
         <div class="h-64">
           <img src="logos/trabalhos/instalacao-bomba-de-calor-aljezur.webp"
@@ -462,7 +481,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <!-- 3 — Sistema térmico | Residencial • Burgau -->
-    <div class="flex-none w-72 snap-center">
+    <div class="flex-none w-64 sm:w-72 snap-center">
       <article class="rounded-lg bg-white shadow-sm overflow-hidden">
         <div class="h-64">
           <img src="logos/trabalhos/instalacao-caldeira-burgau.webp"
@@ -480,7 +499,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <!-- 4 — Climatização | Comercial -->
-    <div class="flex-none w-72 snap-center">
+    <div class="flex-none w-64 sm:w-72 snap-center">
       <article class="rounded-lg bg-white shadow-sm overflow-hidden">
         <div class="h-64">
           <img src="logos/trabalhos/instalacao-bomba-de-calor-comercial.webp"
@@ -498,7 +517,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <!-- 5 — Instalação técnica | Industrial • Portimão -->
-    <div class="flex-none w-72 snap-center">
+    <div class="flex-none w-64 sm:w-72 snap-center">
       <article class="rounded-lg bg-white shadow-sm overflow-hidden">
         <div class="h-64">
           <img src="logos/trabalhos/instalacao-industrial-portimao.webp"
@@ -516,7 +535,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <!-- 6 — Painéis solares | Renováveis • Lagos -->
-    <div class="flex-none w-72 snap-center">
+    <div class="flex-none w-64 sm:w-72 snap-center">
       <article class="rounded-lg bg-white shadow-sm overflow-hidden">
         <div class="h-64">
           <img src="logos/trabalhos/instalacao-paineis-solares-lagos.webp"
@@ -534,7 +553,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <!-- 7 — Solar térmico | Reparação • Luz -->
-    <div class="flex-none w-72 snap-center">
+    <div class="flex-none w-64 sm:w-72 snap-center">
       <article class="rounded-lg bg-white shadow-sm overflow-hidden">
         <div class="h-64">
           <img src="logos/trabalhos/reparacao-painel-solar-termosifao-luz-algarve.webp"
@@ -552,7 +571,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <!-- 8 — Reparação | Comercial • Sagres -->
-    <div class="flex-none w-72 snap-center">
+    <div class="flex-none w-64 sm:w-72 snap-center">
       <article class="rounded-lg bg-white shadow-sm overflow-hidden">
         <div class="h-64">
           <img src="logos/trabalhos/reparacao-ventiladores-comercial-sagres.webp"
@@ -570,7 +589,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <!-- 9 — Diagnóstico | Assistência • Lagoa -->
-    <div class="flex-none w-72 snap-center">
+    <div class="flex-none w-64 sm:w-72 snap-center">
       <article class="rounded-lg bg-white shadow-sm overflow-hidden">
         <div class="h-64">
           <img src="logos/trabalhos/assistencia-tecnica-lagoa.webp"
@@ -588,7 +607,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
    </div>
 
-    <div class="mt-4 hidden md:flex items-center justify-center gap-3">
+    <div class="mt-4 flex items-center justify-center gap-3">
     <button type="button" aria-label="Previous" onclick="scrollGallery(-1)"
             class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-primary shadow-sm hover:bg-gray-50">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -607,7 +626,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- CTA DOBRA 3 -->
   <div class="mt-10 mb-6 flex justify-center bg-primary">
     <a href="#contacto"
-       class="relative inline-flex items-center rounded-full bg-white px-10 pl-6 pr-20 py-4 text-[16px] font-bold text-primary shadow-lg hover:bg-secondary transition">
+       class="relative inline-flex items-center rounded-full bg-white pl-4 sm:pl-6 pr-14 sm:pr-20 py-3 sm:py-4 text-sm sm:text-[16px] font-bold text-primary shadow-lg hover:bg-secondary transition">
       <span class="whitespace-nowrap">MARCAR DIAGNÓSTICO TÉCNICO</span>
 
       <span class="absolute right-2 top-1/2 -translate-y-1/2 grid h-10 w-10 place-items-center rounded-full bg-accent text-white">
@@ -635,9 +654,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="max-w-5xl mx-auto px-6">
     <h2 class="text-2xl md:text-3xl font-bold text-primary text-center mb-10">Os Nossos Serviços</h2>
 
-    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-        <div class="w-12 h-12 mb-4 bg-accent/10 rounded-lg flex items-center justify-center">
+    <div class="grid gap-4 sm:gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="bg-white p-4 sm:p-5 md:p-6 rounded-lg shadow-md border border-gray-100">
+        <div class="w-10 sm:w-12 h-10 sm:h-12 mb-3 sm:mb-4 bg-accent/10 rounded-lg flex items-center justify-center">
           <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
@@ -649,8 +668,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </p>
       </div>
 
-      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-        <div class="w-12 h-12 mb-4 bg-accent/10 rounded-lg flex items-center justify-center">
+      <div class="bg-white p-4 sm:p-5 md:p-6 rounded-lg shadow-md border border-gray-100">
+        <div class="w-10 sm:w-12 h-10 sm:h-12 mb-3 sm:mb-4 bg-accent/10 rounded-lg flex items-center justify-center">
           <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
@@ -664,8 +683,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </p>
       </div>
 
-      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-        <div class="w-12 h-12 mb-4 bg-accent/10 rounded-lg flex items-center justify-center">
+      <div class="bg-white p-4 sm:p-5 md:p-6 rounded-lg shadow-md border border-gray-100">
+        <div class="w-10 sm:w-12 h-10 sm:h-12 mb-3 sm:mb-4 bg-accent/10 rounded-lg flex items-center justify-center">
           <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
@@ -688,28 +707,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p class="mt-2 text-white/80 text-sm md:text-base">Volume real de serviço e reconhecimento.</p>
     </div>
 
-    <div class="mt-10 grid gap-10 md:grid-cols-3 md:gap-8">
+    <div class="mt-8 sm:mt-10 grid gap-6 sm:gap-8 md:grid-cols-3">
       <div class="text-center">
-        <div class="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-white/10">
+        <div class="mx-auto grid h-14 sm:h-16 w-14 sm:w-16 place-items-center rounded-2xl bg-white/10">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#f7c948]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M9 7h6M9 11h6M9 15h6M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/>
           </svg>
         </div>
-        <p class="mt-6 text-white text-3xl md:text-4xl font-extrabold tracking-tight">+500</p>
-        <p class="mt-1 text-white/90 text-sm md:text-base font-semibold uppercase tracking-wide">Serviços realizados em 2025</p>
+        <p class="mt-4 sm:mt-6 text-white text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">+500</p>
+        <p class="mt-1 text-white/90 text-xs sm:text-sm md:text-base font-semibold uppercase tracking-wide">Serviços realizados em 2025</p>
         <p class="mt-2 text-white/75 text-sm leading-relaxed">Instalações, manutenções e reparações na nossa zona de atuação.</p>
       </div>
 
       <div class="text-center">
-        <div class="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-white/10">
+        <div class="mx-auto grid h-14 sm:h-16 w-14 sm:w-16 place-items-center rounded-2xl bg-white/10">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#f7c948]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M12 3v3m0 12v3m9-9h-3M6 12H3m15.364-6.364l-2.121 2.121M8.757 15.243l-2.121 2.121m0-11.485l2.121 2.121m9.486 9.486l2.121 2.121"/>
           </svg>
         </div>
-        <p class="mt-6 text-white text-3xl md:text-4xl font-extrabold tracking-tight">18 Anos no Terreno</p>
-        <p class="mt-1 text-white/90 text-sm md:text-base font-semibold uppercase tracking-wide">Conhecimento técnico da nossa zona</p>
+        <p class="mt-4 sm:mt-6 text-white text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">18 Anos no Terreno</p>
+        <p class="mt-1 text-white/90 text-xs sm:text-sm md:text-base font-semibold uppercase tracking-wide">Conhecimento técnico da nossa zona</p>
         <p class="mt-2 text-white/75 text-sm leading-relaxed">
           Intervenções contínuas em Lagos, Portimão, Lagoa, Burgau e Sagres,<br class="hidden md:block">
           e zonas envolventes com experiência prática em ambientes costeiros, humidade e uso intensivo dos sistemas.
@@ -717,13 +736,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
 
       <div class="text-center">
-        <div class="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-white/10">
+        <div class="mx-auto grid h-14 sm:h-16 w-14 sm:w-16 place-items-center rounded-2xl bg-white/10">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#f7c948]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V7l7-4z"/>
           </svg>
         </div>
-        <p class="mt-6 text-white text-3xl md:text-4xl font-extrabold tracking-tight">Certificado</p>
-        <p class="mt-1 text-white/90 text-sm md:text-base font-semibold uppercase tracking-wide">Conformidade e segurança</p>
+        <p class="mt-4 sm:mt-6 text-white text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">Certificado</p>
+        <p class="mt-1 text-white/90 text-xs sm:text-sm md:text-base font-semibold uppercase tracking-wide">Conformidade e segurança</p>
         <p class="mt-2 text-white/75 text-sm leading-relaxed">Técnicos certificados e intervenção profissional.</p>
       </div>
     </div>
@@ -744,7 +763,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="mt-10 grid gap-6 md:grid-cols-2">
       <div class="bg-gray-50 p-6 rounded-lg border border-gray-100">
         <h3 class="text-lg font-bold text-primary">Contrato de Manutenção Preventiva com ANS</h3>
-        <ul class="mt-3 space-y-2 text-sm text-gray-700">
+        <ul class="mt-3 space-y-1 sm:space-y-2 text-xs sm:text-sm text-gray-700">
           <li><strong>Tempo de resposta:</strong> acordado para situações críticas.</li>
           <li><strong>Conformidade:</strong> histórico de manutenção organizado para inspeções e auditorias.</li>
           <li><strong>Eficiência:</strong> otimização energética em sistemas de maior porte (VRV/Chillers).</li>
@@ -753,7 +772,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <div class="bg-gray-50 p-6 rounded-lg border border-gray-100">
         <h3 class="text-lg font-bold text-primary">Setores onde o impacto é imediato</h3>
-        <ul class="mt-3 space-y-2 text-sm text-gray-700">
+        <ul class="mt-3 space-y-1 sm:space-y-2 text-xs sm:text-sm text-gray-700">
           <li><strong>Restauração:</strong> perdas de stock e condições de trabalho insuportáveis.</li>
           <li><strong>Hotelaria:</strong> reclamações e reembolsos por falta de conforto.</li>
           <li><strong>Áreas Comerciais:</strong> interrupção da cadeia de frio e riscos de saúde pública.</li>
@@ -776,9 +795,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="bg-white border-t border-gray-100 py-10">
   <div class="mx-auto max-w-5xl px-6">
     <p class="text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Reconhecimentos e Certificações</p>
-    <div class="mt-6 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-12">
-      <img src="logos/top-pme-portugal-2025-algarve.svg" alt="Top SME 2025 badge" class="h-21 w-auto" loading="lazy"/>
-      <img src="logos/certificado-de-gases.svg" alt="Technical certification" class="h-21 w-auto" loading="lazy"/>
+    <div class="mt-6 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 md:gap-12">
+      <img src="logos/top-pme-portugal-2025-algarve.svg" alt="Top SME 2025 badge" class="h-16 sm:h-20 md:h-21 w-auto max-w-[180px]" loading="lazy"/>
+      <img src="logos/certificado-de-gases.svg" alt="Technical certification" class="h-16 sm:h-20 md:h-21 w-auto max-w-[180px]" loading="lazy"/>
     </div>
   </div>
 </section>
@@ -788,9 +807,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">
       Execução técnica conforme a regulamentação em vigor
     </p>
-    <div class="mt-4 flex items-center justify-center gap-10">
-      <img src="logos/adene.svg" alt="ADENE" class="h-22 w-auto opacity-80" loading="lazy"/>
-      <img src="logos/impic.svg" alt="IMPIC" class="h-21 w-auto opacity-80" loading="lazy"/>
+    <div class="mt-4 flex items-center justify-center gap-6 sm:gap-10">
+      <img src="logos/adene.svg" alt="ADENE" class="h-14 sm:h-20 md:h-22 w-auto max-w-[120px] sm:max-w-none opacity-80" loading="lazy"/>
+      <img src="logos/impic.svg" alt="IMPIC" class="h-14 sm:h-20 md:h-21 w-auto max-w-[120px] sm:max-w-none opacity-80" loading="lazy"/>
     </div>
   </div>
 </section>
@@ -820,26 +839,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </p>
 
     <!-- Card de requisitos -->
-    <div class="mt-8 bg-white rounded-lg shadow-md border border-gray-100 p-6 text-left max-w-xl mx-auto">
-      <p class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-4">O que procuramos</p>
-      <ul class="space-y-3">
-        <li class="flex items-start gap-3 text-sm text-gray-700">
+    <div class="mt-8 bg-white rounded-lg shadow-md border border-gray-100 p-4 sm:p-5 md:p-6 text-left max-w-xl mx-auto">
+      <p class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-3 sm:mb-4">O que procuramos</p>
+      <ul class="space-y-2 sm:space-y-3">
+        <li class="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-gray-700">
           <span class="mt-1 h-2 w-2 rounded-full bg-accent flex-shrink-0"></span>
           Experiência em instalação/manutenção de ar condicionado
         </li>
-        <li class="flex items-start gap-3 text-sm text-gray-700">
+        <li class="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-gray-700">
           <span class="mt-1 h-2 w-2 rounded-full bg-accent flex-shrink-0"></span>
           Carta de condução (categoria B)
         </li>
-        <li class="flex items-start gap-3 text-sm text-gray-700">
+        <li class="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-gray-700">
           <span class="mt-1 h-2 w-2 rounded-full bg-accent flex-shrink-0"></span>
           Sentido de responsabilidade e boa apresentação
         </li>
-        <li class="flex items-start gap-3 text-sm text-gray-700">
+        <li class="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-gray-700">
           <span class="mt-1 h-2 w-2 rounded-full bg-accent flex-shrink-0"></span>
           Disponibilidade para trabalho no Barlavento Algarvio
         </li>
-        <li class="flex items-start gap-3 text-sm text-gray-700">
+        <li class="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-gray-700">
           <span class="mt-1 h-2 w-2 rounded-full bg-accent flex-shrink-0"></span>
           Certificado de gases fluorados <span class="ml-1 text-gray-400">(preferencial)</span>
         </li>
@@ -870,57 +889,57 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <div class="grid gap-4 md:grid-cols-2">
         <div>
-          <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">Primeiro nome</label>
+          <label for="firstName" class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Primeiro nome</label>
           <input type="text" id="firstName" name="firstName" required
-                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
+                 class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
         </div>
 
         <div>
-          <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">Último nome</label>
+          <label for="lastName" class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Último nome</label>
           <input type="text" id="lastName" name="lastName" required
-                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
+                 class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
         </div>
       </div>
 
       <div>
-        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+        <label for="email" class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Email</label>
         <input type="email" id="email" name="email" required
                placeholder="ex.: nome@email.com"
-               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
+               class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
       </div>
 
       <div>
-        <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Telefone</label>
+        <label for="phone" class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Telefone</label>
         <input type="tel" id="phone" name="phone" required
-               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
+               class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
       </div>
 
       <div>
-        <label for="morada" class="block text-sm font-medium text-gray-700 mb-2">Morada</label>
+        <label for="morada" class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Morada</label>
         <input type="text" id="morada" name="morada" required
                placeholder="ex.: Rua das Flores, nº 12, 1º Dto"
-               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
+               class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
       </div>
 
       <div class="grid gap-4 md:grid-cols-2">
         <div>
-          <label for="codigoPostal" class="block text-sm font-medium text-gray-700 mb-2">Código Postal</label>
+          <label for="codigoPostal" class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Código Postal</label>
           <input type="text" id="codigoPostal" name="codigoPostal" required
                  placeholder="ex.: 8600-252"
-                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
+                 class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
         </div>
         <div>
-          <label for="localidade" class="block text-sm font-medium text-gray-700 mb-2">Localidade</label>
+          <label for="localidade" class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Localidade</label>
           <input type="text" id="localidade" name="localidade" required
                  placeholder="ex.: Lagos"
-                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
+                 class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"/>
         </div>
       </div>
 
       <div>
-        <label for="setor" class="block text-sm font-medium text-gray-700 mb-2">O serviço é para</label>
+        <label for="setor" class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">O serviço é para</label>
         <select id="setor" name="setor"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent" required>
+                class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent" required>
           <option value="">Selecione um setor</option>
           <option value="residência">Residência</option>
           <option value="comercial">Espaço comercial (loja, restaurante, escritório)</option>
@@ -929,9 +948,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
 
       <div>
-        <label for="service" class="block text-sm font-medium text-gray-700 mb-2">Em que podemos ajudar?</label>
+        <label for="service" class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Em que podemos ajudar?</label>
         <select id="service" name="service"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent" required>
+                class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent" required>
           <option value="">Selecione um serviço</option>
           <option value="reparacao">O equipamento não está a funcionar</option>
           <option value="instalacao">Instalação Nova</option>
@@ -942,7 +961,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
 
       <div>
-        <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Conte-nos um pouco da sua situação</label>
+        <label for="message" class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Conte-nos um pouco da sua situação</label>
         <textarea id="message" name="message" rows="4"
                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"></textarea>
       </div>
@@ -958,11 +977,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- Footer -->
 <footer class="bg-primary text-white py-12">
   <div class="max-w-6xl mx-auto px-6">
-    <div class="grid gap-8 md:grid-cols-3">
+    <div class="grid gap-6 sm:gap-8 md:grid-cols-3">
 
       <div>
-        <h3 class="font-bold text-lg mb-4">DS Clima Service</h3>
-        <p class="text-sm text-gray-300">
+        <h3 class="font-bold text-base sm:text-lg mb-3 sm:mb-4">DS Clima Service</h3>
+        <p class="text-xs sm:text-sm text-gray-300">
           Instalação, manutenção e assistência técnica em Lagos, Portimão, Lagoa, Aljezur e Sagres.
         </p>
       </div>
@@ -995,12 +1014,46 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <a id="wa-float"
    href="https://wa.me/351961653736?text=Ol%C3%A1%2C%20quero%20pedir%20or%C3%A7amento."
    target="_blank" rel="noopener" aria-label="Falar no WhatsApp"
-   class="fixed bottom-5 right-5 z-[9999] flex h-14 w-14 items-center justify-center rounded-full bg-green-500 shadow-lg
-          opacity-0 translate-y-3 scale-95 pointer-events-none transition-all duration-500 ease-out hover:scale-105">
+   class="fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-[9999] flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-green-500 shadow-lg
+          opacity-0 translate-y-3 scale-95 pointer-events-none transition-all duration-500 ease-out hover:scale-105"
+   style="margin-right: env(safe-area-inset-right, 0px); margin-bottom: env(safe-area-inset-bottom, 0px)">
   <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="white" class="bi bi-whatsapp" viewBox="0 0 16 16">
     <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
   </svg>
 </a>
+
+<!-- ---------- Banner recrutamento ---------- -->
+<script>
+  (function () {
+    const banner = document.getElementById('recruit-banner');
+    const header = document.getElementById('site-header');
+
+    function getBannerHeight() {
+      return banner ? banner.offsetHeight : 0;
+    }
+
+    function applyBannerOffset() {
+      if (header) header.style.top = getBannerHeight() + 'px';
+    }
+
+    function dismissBanner() {
+      if (!banner) return;
+      banner.style.display = 'none';
+      if (header) header.style.top = '0px';
+      localStorage.setItem('recruit-banner-dismissed', '1');
+    }
+
+    window.dismissBanner = dismissBanner;
+
+    if (localStorage.getItem('recruit-banner-dismissed') === '1') {
+      if (banner) banner.style.display = 'none';
+      if (header) header.style.top = '0px';
+    } else {
+      applyBannerOffset();
+      window.addEventListener('resize', applyBannerOffset);
+    }
+  })();
+</script>
 
 <!-- ---------- Header scroll transition ---------- -->
 <script>
@@ -1020,6 +1073,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- ---------- Galeria: loop manual + botões ---------- -->
 <script>
+  function getGalleryStep(el) {
+    const firstCard = el.querySelector('.flex-none');
+    const gap = parseFloat(getComputedStyle(el).columnGap) || 0;
+    return (firstCard ? firstCard.offsetWidth : 288) + gap;
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     const gallery = document.getElementById("gallery");
     if (!gallery) return;
@@ -1028,21 +1087,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     originalCards.forEach(card => gallery.appendChild(card.cloneNode(true)));
 
     let jumping = false;
-    const EPS = 2;
     gallery.addEventListener("scroll", () => {
       if (jumping) return;
       const half = gallery.scrollWidth / 2;
       const x = gallery.scrollLeft;
 
-      if (x >= half - EPS) {
+      if (x >= half) {
         jumping = true;
         gallery.classList.add("no-snap");
-        gallery.scrollLeft = x - half + EPS;
-        requestAnimationFrame(() => { gallery.classList.remove("no-snap"); jumping = false; });
-      } else if (x <= EPS) {
-        jumping = true;
-        gallery.classList.add("no-snap");
-        gallery.scrollLeft = x + half - EPS;
+        gallery.scrollLeft = x - half;
         requestAnimationFrame(() => { gallery.classList.remove("no-snap"); jumping = false; });
       }
     });
@@ -1076,9 +1129,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   function scrollGallery(direction) {
     const el = document.getElementById("gallery");
     if (!el) return;
-    const cardWidth = 288;
-    const gap = 16;
-    el.scrollBy({ left: direction * (cardWidth + gap), behavior: "smooth" });
+    const step = getGalleryStep(el);
+    const half = el.scrollWidth / 2;
+
+    if (direction < 0 && el.scrollLeft < step) {
+      el.classList.add("no-snap");
+      el.scrollLeft = el.scrollLeft + half;
+      requestAnimationFrame(() => {
+        el.classList.remove("no-snap");
+        el.scrollBy({ left: -step, behavior: "smooth" });
+      });
+    } else {
+      el.scrollBy({ left: direction * step, behavior: "smooth" });
+    }
   }
 </script>
 
@@ -1196,8 +1259,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       },
       {
         author: '— Bruno Neves',
-        pt: '"Serviço profissional de excelência. Serviço realizado no espaço de negócio dentro do tempo acordado. Recomendado."',
+        pt: '"Serviço profissional de excelência, realizado no tempo acordado. Recomendado."',
         photo: 'logos/bruno.webp'
+      },
+      {
+        author: '— Rob H',
+        pt: '"Serviço excelente, com conhecimento técnico e total confiança. A nossa escolha para climatização."',
+        color: '#4a94b8'
+      },
+      {
+        author: '— E Berger',
+        pt: '"Profissionais, fiáveis e especialistas em climatização e solar. A nossa empresa de referência."',
+        color: '#013365'
+      },
+      {
+        author: '— Jimmy Bakker',
+        pt: '"Trabalhei com a DS Clima Service a nível pessoal e empresarial. Muito satisfeito com o resultado."',
+        color: '#3ec2f4'
+      },
+      {
+        author: '— Laura Grint',
+        pt: '"Resposta rápida ao problema de ar condicionado. Diagnóstico claro, peças originais e instalação eficiente."',
+        color: '#4a94b8'
       }
     ];
 
@@ -1209,59 +1292,40 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if (!card || !authorEl || !textEl || !photoEl) return;
 
     let index = 0;
-    let lockedHeight = 0;
 
-    function currentLang() { return 'pt'; }
-
-    function lockMaxHeight() {
-      const lang = currentLang();
-      const current = { author: authorEl.textContent, text: textEl.textContent, photo: photoEl.src };
-
-      let max = 0;
-      testimonials.forEach(t => {
-        authorEl.textContent = t.author;
-        textEl.textContent = t[lang];
-        photoEl.src = t.photo;
-        const h = card.getBoundingClientRect().height;
-        if (h > max) max = h;
-      });
-
-      authorEl.textContent = current.author;
-      textEl.textContent = current.text;
-      photoEl.src = current.photo;
-
-      lockedHeight = Math.ceil(max);
-      card.style.height = lockedHeight + 'px';
+    function renderPhoto(t) {
+      if (t.photo) {
+        const name = t.author.replace(/^—\s*/, '');
+        photoEl.innerHTML = `<img src="${t.photo}" alt="Fotografia de ${name}" class="h-full w-full object-cover"/>`;
+      } else {
+        const name = t.author.replace(/^—\s*/, '');
+        const initial = name.charAt(0).toUpperCase();
+        const color = t.color || '#013365';
+        photoEl.innerHTML = `<span class="h-full w-full flex items-center justify-center text-white font-bold text-base" style="background-color: ${color}">${initial}</span>`;
+      }
     }
 
     function setTestimonial(i) {
-      const lang = currentLang();
       authorEl.style.opacity = 0;
       textEl.style.opacity = 0;
       photoEl.style.opacity = 0;
 
       setTimeout(() => {
         authorEl.textContent = testimonials[i].author;
-        textEl.textContent = testimonials[i][lang];
-        photoEl.src = testimonials[i].photo;
+        textEl.textContent = testimonials[i].pt;
+        renderPhoto(testimonials[i]);
         authorEl.style.opacity = 1;
         textEl.style.opacity = 1;
         photoEl.style.opacity = 1;
       }, 300);
     }
 
-    lockMaxHeight();
-    setTestimonial(0);
+    renderPhoto(testimonials[0]);
 
     setInterval(() => {
       index = (index + 1) % testimonials.length;
       setTestimonial(index);
-    }, 3000);
-
-    window.addEventListener('resize', () => {
-      card.style.height = 'auto';
-      lockMaxHeight();
-    });
+    }, 4000);
   });
 </script>
 
