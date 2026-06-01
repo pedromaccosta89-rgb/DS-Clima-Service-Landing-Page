@@ -107,7 +107,6 @@ $history[] = $now;
 
 $firstName = clean_field('firstName');
 $lastName  = clean_field('lastName');
-$remarkParts = array_filter([clean_field('setor'), clean_field('service'), clean_field('message')]);
 
 $payload = [
   'lang'         => $lang,
@@ -117,7 +116,9 @@ $payload = [
   'street'       => clean_field('morada'),
   'postal_code'  => clean_field('codigoPostal'),
   'city'         => clean_field('localidade'),
-  'remark'       => implode(' | ', $remarkParts),
+  'setor'        => clean_field('setor'),
+  'service_type' => clean_field('service'),
+  'remark'       => clean_field('message'),
   'source'       => 'formulario-lp',
   'sourceUrl'    => (string)($_SERVER['HTTP_REFERER'] ?? ''),
   'submittedAt'  => gmdate('c'),
